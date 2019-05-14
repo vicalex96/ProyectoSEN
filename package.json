@@ -1,0 +1,30 @@
+{
+  "name": "sen",
+  "version": "0.0.0",
+  "description": "Proyecto de clase para la gestion del sistema electrico nacional",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ingswucab/dejesus-ledezma-vasquez-teamnode.git"
+  },
+  "keywords": [
+    "sen",
+    "software",
+    "grafo",
+    "electricidad"
+  ],
+  "author": "Victor De Jesus - Wilmer Ledezma - Miguel Vasquez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ingswucab/dejesus-ledezma-vasquez-teamnode/issues"
+  },
+  "homepage": "https://github.com/ingswucab/dejesus-ledezma-vasquez-teamnode#readme",
+  "dependencies": {
+    "nodemon": "^1.19.0"
+  }
+}
