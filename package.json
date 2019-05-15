@@ -25,6 +25,8 @@
   },
   "homepage": "https://github.com/ingswucab/dejesus-ledezma-vasquez-teamnode#readme",
   "dependencies": {
-    "nodemon": "^1.19.0"
+    "express": "^4.16.4",
+    "nodemon": "^1.19.0",
+    "pg": "^7.11.0"
   }
 }
