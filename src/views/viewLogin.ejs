@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+        <% include import/viewhtmlHeader.ejs %>
+        <link rel="stylesheet" href="css/standardStile.css">
+        <link rel="stylesheet" href="css/loginStile.css">
+  </head>
+  <body>
+    <body>
+        <% include import/viewHeader.ejs %>
+
+        <div class="modal-dialog text-center">
+          <div class="col-sm-8 main-section">
+            <div class="modal-content">
+
+              <div class=" user-img">
+                <img src="img/enchufe.png">
+              </div>
+
+              <!-- messages -->
+              <h1 class="text-center">
+                <span class="fa fa-sign-in"></span> Login
+              </h1>
+
+
+              <form class="col-12" action="/login" method="post">
+                <div class="form-group icon-user" id="user-group">
+                  <input type="user" name="user" class="form-control" placeholder="usuario"/>
+                </div>
+                <div class="form-group icon-pencil" id="contrasena-group">
+                  <input type="password" name="password" class="form-control" placeholder="contraseña"/>
+                </div>
+                <input type="submit" value="ingresar" class="btn btn-success">
+              </form>
+            </div>
+          </div>
+        </div>
+
+    <% include import/BSConnect.ejs %>
+  </body>
+</html>
