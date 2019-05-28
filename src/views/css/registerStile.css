@@ -1,0 +1,25 @@
+
+.editor{
+  margin-top: 60px;
+  background: #75a344;
+  border-radius: 5px;
+
+
+  font-size: 20px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #31332C;
+  border: #000;
+  padding: 20px 20px 20px 20px;
+
+  box-shadow: 0px 0px 3px #75c644;
+
+}
+
+.editor .btn-success{
+  width: 60%;
+  margin: 5px 0 15px;
+  border-radius: 5px;
+  border: 0px;
+
+}
