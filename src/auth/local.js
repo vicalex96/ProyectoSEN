@@ -15,7 +15,7 @@ passport.use(new LocalStrategy(options, (username, password, done) => {
   .then((usuario) => {
     var idup = usuario.id
     var suma= usuario.contador+1
-    
+
     if (!usuario) {
       return done(null, false,req.flash('loginMessage', 'Usuario no encontrado'))
     }
@@ -26,6 +26,7 @@ passport.use(new LocalStrategy(options, (username, password, done) => {
 
     if (!authHelpers.comparePass(password, usuario.contrasena)) {
 
+
       if(usuario.contador  < 2 && !usuario.bloqueado ) {
         knex('usuario').where({id: idup }).update({contador: suma}, ['id', 'contador']).then()
       } else if (!usuario.bloqueado){
@@ -34,8 +35,7 @@ passport.use(new LocalStrategy(options, (username, password, done) => {
       }
 
       return done(null, false, req.flash('loginMessage', 'Contraseña no valida'));
-    }
-    else if(!usuario.bloqueado ) {
+    } else if(usuario.contador != 0 && !usuario.bloqueado ) {
         knex('usuario').where({id: idup }).update({contador: 0}, ['id', 'contador']).then()
         return done(null, usuario);
     } else {

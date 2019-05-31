@@ -7,7 +7,7 @@
   </head>
   <body>
     <body>
-        <% include import/viewHeaderUnlog.ejs %>
+        <% include import/viewHeader.ejs %>
 
         <div class="modal-dialog text-center">
           <div class="col-sm-8 main-section">
@@ -21,6 +21,11 @@
               <h1 class="text-center">
                 <span class="fa fa-sign-in"></span> Login
               </h1>
+              <% if (message.length > 0) { %>
+                <div class="alert alert-danger">
+                  <%= message %>
+                </div>
+              <% } %>
 
               <form class="col-12" action="/login" method="post">
                 <div class="form-group icon-user" id="user-group">
