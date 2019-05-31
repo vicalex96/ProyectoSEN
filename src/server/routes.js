@@ -4,42 +4,34 @@ const authHelpers = require('../auth/_helpers');
 const passport = require('../auth/local');
 
 module.exports = (app) => {
+    app.get('/', function (req, res) {
+      res.redirect('/home')
+    })
 
     app.get('/home', function (req, res) {
       if (req.isAuthenticated()) {
-
         res.render('viewHome', {
           logged: true,
           supervisor: req.user.supervisor,
           user: req.user
         });
       }else{
-        res.render('viewHome', {
+        res.render('viewHomeUnLog', {
           logged: false,
           supervisor: false,
-          user: req.user,
         });
       }
     })
 
     app.get('/login', function (req, res) {
-<<<<<<< HEAD
-        res.render('viewlogin');
-=======
-      //res.sendFile(rout.join(__dirname, '..' ,'/views/login.html'));
       if (req.isAuthenticated()) {
         res.redirect('/perfil');
       }else{
-        res.render('viewlogin', {
-          message: req.flash('loginMessage'),
-          logged: false,
-          user: ''
-        });
+        res.render('viewlogin');
       }
->>>>>>> parent of 58fdf77... Ent1-002: Solucion de errores
     })
 
-    /*app.post('/login', authHelpers.loginRedirect, (req, res, next) => {
+    app.post('/login', authHelpers.loginRedirect, (req, res, next) => {
       passport.authenticate('local', (err, user, info) => {
         if (err) { handleResponse(res, 500, 'error'); }
         if (!user) { req.flash('loginMessage', 'No User found') }
@@ -50,7 +42,7 @@ module.exports = (app) => {
           });
         }
       })(req, res, next);
-    });*/
+    });
 
     app.get('/perfil', function (req, res) {
 
@@ -66,7 +58,7 @@ module.exports = (app) => {
 
     app.get('/register', function (req, res) {
 
-      if (req.isAuthenticated() && req.user.supervisor) {
+      if (1) {
         res.render('viewRegister',{
           logged: true,
           user: req.user,
@@ -123,8 +115,6 @@ app.get('/userAdministration', function (req, res) {
                 res.redirect('/home')
               }
             })
-
-
 
   function handleLogin(req, user) {
     return new Promise((resolve, reject) => {
