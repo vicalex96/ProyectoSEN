@@ -1,0 +1,44 @@
+<!DOCTYPE html> <!--- View Registrar Usuario -->
+<html lang="en" dir="ltr">
+  <head>
+        <% include import/viewhtmlHeader.ejs %>
+        <link rel="stylesheet" href="css/standardStile.css">
+        <link rel="stylesheet" href="css/registerStile.css">
+
+  </head>
+  <body>
+    <body>
+      <% include import/viewHeader.ejs %>
+      <div class="container col-lg-6  editor">
+
+            <h4 class= "text-center"> Datos de Usuario </h4>
+
+            <div class="form-group">
+                <label for="title">Nombre de Usuario: <%= user.nombre_usuario %> </label>
+                </div>
+
+            <div class="form-group">
+                <label for="title">Nombre: <%= user.nombre %></label>
+                </div>
+
+            <div class="form-group">
+                <label for="title">Apellido: <%= user.apellido %> </label>
+                </div>
+
+
+            <div class="form-group">
+                <label for="title">Cargo: <%if(user.supervisor == true){%> Supervisor <%} else {%> Operador <%}%>
+                  </label>
+                </div>
+
+
+            <div class="form-group">
+                <label for="title">Codigo de empleado: <% if(user.supervisor){%> SUP <%} else {%> OPE <%}%>-<%= user.id%> - <%= (user.id*3000000).toString(16) %> </label>
+                </div>
+
+  </div>
+
+        <% include import/BSConnect.ejs %>
+
+    </body>
+</html>

@@ -11,13 +11,13 @@ init();
 
 passport.use(new LocalStrategy(options, (username, password, done) => {
   // check to see if the username exists
-  knex('usuario').where({ username }).first()
-  .then((user) => {
-    if (!user) return done(null, false);
-    if (!authHelpers.comparePass(password, user.password)) {
-      return done(null, false);
+  knex('usuario').where({ nombre_usuario: username  }).first()
+  .then((usuario) => {
+    if (!usuario) return done(null, false,req.flash('loginMessage', 'Usuario no encontrado'));
+    if (!authHelpers.comparePass(password, usuario.contrasena)) {
+      return done(null, false, req.flash('loginMessage', 'Contraseña no valida'));
     } else {
-      return done(null, user);
+      return done(null, usuario);
     }
   })
   .catch((err) => { return done(err); });

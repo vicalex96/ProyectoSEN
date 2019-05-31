@@ -1,4 +1,4 @@
-<!-- Encabezado del programa-->
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <h6 class="navbar-brand" href="#"> SEN </h6>
 
@@ -9,26 +9,28 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="/">Inicio <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="/home">Inicio <span class="sr-only">(current)</span></a>
       </li>
 
-      <!-- Ocultar al iniciar sesion-->
-      <li class="nav-item">
-        <a class="nav-link" href="/login"> Ingresar</a>
-      </li>
-       <!-- Ocultar al iniciar sesion -fin- -->
+      <% if (logged == false) { %>
+        <li class="nav-item">
+          <a class="nav-link" href="/login"> Ingresar</a>
+        </li>
+      <% } %>
 
-        <!-- Ocultar  antes de iniciar sesion-->
+      <% if (logged == true) { %>
       <li class="nav-item">
-        <a class="nav-link" href="#">  Perfil</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">  Grafo</a>
+        <a class="nav-link" href="/Perfil">  Perfil</a>
       </li>
 
-      <!-- Ocultar para Operadores-->
       <li class="nav-item">
-        <a class="nav-link" href="#">  Bitacora</a>
+        <a class="nav-link" href="/Grafo">  Grafo</a>
+      </li>
+
+      <% if (user.supervisor == true) { %>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/Bitacora">  Bitacora</a>
       </li>
 
       <li class="nav-item dropdown">
@@ -38,17 +40,22 @@
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item " href="/userAdministration"> editar Datos</a>
           <a class="dropdown-item " href="/register"> crear Usuario</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Desbloquear Cuentas</a>
+          <!--div class="dropdown-divider"></div-->
+          <!--a class="dropdown-item" href="#">Desbloquear Cuentas</a-->
         </div>
       </li>
-      <!-- ocultar cuando se esta desconectado-->
-      <li class="nav-item">
-        <a class="nav-link" href="#">  Desconectar</a>
-      </li>
-      <!-- Desactivar para Operadores -fin-  -->
-
-      <!-- Ocultar  antes de iniciar sesion -fin- -->
+      <% } %>
+        <li class="nav-item ">
+          <a class="nav-link" href="/logout">  Desconectar</a>
+        </li>
     </ul>
+
+          <ul class="nav navbar-nav  navbar-right">
+            <span class="navbar-text">
+                <%= user.nombre_usuario %>  - <%= (user.id*3000000).toString(16) %>
+              </span>
+
+          </ul>
+          <% } %>
   </div>
 </nav>
