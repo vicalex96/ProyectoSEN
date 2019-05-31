@@ -27,7 +27,7 @@ module.exports = (app) => {
         res.render('viewlogin');
     })
 
-    app.post('/login', authHelpers.loginRedirect, (req, res, next) => {
+    /*app.post('/login', authHelpers.loginRedirect, (req, res, next) => {
       passport.authenticate('local', (err, user, info) => {
         if (err) { handleResponse(res, 500, 'error'); }
         if (!user) { req.flash('loginMessage', 'No User found') }
@@ -38,7 +38,7 @@ module.exports = (app) => {
           });
         }
       })(req, res, next);
-    });
+    });*/
 
     app.get('/perfil', function (req, res) {
 
