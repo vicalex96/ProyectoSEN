@@ -4,34 +4,30 @@ const authHelpers = require('../auth/_helpers');
 const passport = require('../auth/local');
 
 module.exports = (app) => {
+    app.get('/', function (req, res) {
+      res.redirect('/home')
+    })
 
     app.get('/home', function (req, res) {
       if (req.isAuthenticated()) {
-
         res.render('viewHome', {
           logged: true,
           supervisor: req.user.supervisor,
           user: req.user
         });
       }else{
-        res.render('viewHome', {
+        res.render('viewHomeUnLog', {
           logged: false,
           supervisor: false,
-          user: req.user,
         });
       }
     })
 
     app.get('/login', function (req, res) {
-      //res.sendFile(rout.join(__dirname, '..' ,'/views/login.html'));
       if (req.isAuthenticated()) {
         res.redirect('/perfil');
       }else{
-        res.render('viewlogin', {
-          message: req.flash('loginMessage'),
-          logged: false,
-          user: ''
-        });
+        res.render('viewlogin');
       }
     })
 
@@ -62,7 +58,7 @@ module.exports = (app) => {
 
     app.get('/register', function (req, res) {
 
-      if (req.isAuthenticated() && req.user.supervisor) {
+      if (1) {
         res.render('viewRegister',{
           logged: true,
           user: req.user,
@@ -119,8 +115,6 @@ app.get('/userAdministration', function (req, res) {
                 res.redirect('/home')
               }
             })
-
-
 
   function handleLogin(req, user) {
     return new Promise((resolve, reject) => {
