@@ -24,11 +24,7 @@ module.exports = (app) => {
     })
 
     app.get('/login', function (req, res) {
-      if (req.isAuthenticated()) {
-        res.redirect('/perfil');
-      }else{
         res.render('viewlogin');
-      }
     })
 
     app.post('/login', authHelpers.loginRedirect, (req, res, next) => {
