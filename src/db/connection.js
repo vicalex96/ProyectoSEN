@@ -2,7 +2,7 @@ const HerokuUrl = 'postgres://jgdfnswemkqcdh:9ccfd43d91fcc63885ef1f5eee5cbc80acf
 
 module.exports = require('knex')({
   client: 'pg',
-  connection: HerokuUrl,
+  connection: DATABASE_URL,
   /*{
     host : '127.0.0.1',
     user : 'postgres',
