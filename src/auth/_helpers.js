@@ -6,8 +6,6 @@ function comparePass(userPassword, databasePassword) {
 }
 
 function createUser(req, res) {
-  return handleErrors(req)
-  .then(() => {
     if(req.body.userType == 'Supervisor'){
         userType = true;
     }else{
@@ -22,11 +20,20 @@ function createUser(req, res) {
       nombre: req.body.name,
       apellido:req.body.lastname,
       supervisor: userType
-    }).returning('*');
-  })
-  .catch((err) => {
-    res.status(400).json({status: err.message});
-  });
+    })
+    .then((usuario) => {
+        if (usuario) {
+            req.flash('registerMessage','usuario creado')
+        }
+    })
+    .catch(function(error) {
+        if(error.code == 23505){
+            req.flash('registerMessage','usuario duplicado')
+        }else{
+            req.flash('registerMessage','ocurrio un error')
+        }
+        return next();
+    });
 }
 
   function loginRequired(req, res, next) {

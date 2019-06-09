@@ -1,5 +1,5 @@
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #75a344;">
     <h6 class="navbar-brand" href="#"> SEN </h6>
 
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,8 +40,6 @@
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item " href="/userAdministration"> editar Datos</a>
           <a class="dropdown-item " href="/register"> crear Usuario</a>
-          <!--div class="dropdown-divider"></div-->
-          <!--a class="dropdown-item" href="#">Desbloquear Cuentas</a-->
         </div>
       </li>
       <% } %>
@@ -52,7 +50,7 @@
 
           <ul class="nav navbar-nav  navbar-right">
             <span class="navbar-text">
-                <%= user.nombre_usuario %>  - <%= (user.id*3000000).toString(16) %>
+                <%= user.nombre_usuario %>  - <%= (user.id*300000).toString(16) %>
               </span>
 
           </ul>

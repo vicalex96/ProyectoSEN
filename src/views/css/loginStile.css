@@ -6,7 +6,7 @@
 }
 .modal-content{
   background-color:#75a344;
-  box-shadow: 0px 0px 3px #75c644;
+
   padding-top: 10px;
 }
 
@@ -17,22 +17,16 @@
   background-color:#DF5B2D;
 }
 
-.form-group input {
-  height: 42px;
-  font-size: 18px;
-  padding-left: 20px;
-  border-radius: 5px;
-}
-.form-group::before{
-  position: absolute;
-  left: 28px;
-  font-size: 22px;
-  padding-top: 10px;
+.invalid-feedback{
+    background-color:#BF140E;
+    border-radius: 5px;
+    border-color: #000;
+    font-size: 16px;
+    color: #FFF;
 }
 
 .btn-success{
   width: 60%;
   margin: 5px 0 25px;
-  border-radius: 5px;
-  border: 0px;
+
 }

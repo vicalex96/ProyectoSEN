@@ -1,25 +1,11 @@
-
-.editor{
-  margin-top: 60px;
-  background: #75a344;
-  border-radius: 5px;
-
-
-  font-size: 20px;
-  font-weight: bold;
-  text-decoration: none;
-  color: #31332C;
-  border: #000;
-  padding: 20px 20px 20px 20px;
-
-  box-shadow: 0px 0px 3px #75c644;
-
+.color{
+background-color:#75a344;
 }
 
-.editor .btn-success{
-  width: 60%;
-  margin: 20px 0 15px;
-  border-radius: 5px;
-  border: 0px;
-
+.invalid-feedback{
+    background-color:#BF140E;
+    border-radius: 5px;
+    border-color: #000;
+    font-size: 16px;
+    color: #FFF;
 }
