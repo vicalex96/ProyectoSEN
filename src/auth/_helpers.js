@@ -21,15 +21,16 @@ function createUser(req, res) {
       apellido:req.body.lastname,
       supervisor: userType
     })
-    .then((usuario) => {
-        if (usuario) {
+    .then((res) => {
+        if (res) {
             req.flash('registerMessage','usuario creado')
         }
+        return next();
     })
     .catch(function(error) {
         if(error.code == 23505){
             req.flash('registerMessage','usuario duplicado')
-        }else{
+        }else if( error.code != null){
             req.flash('registerMessage','ocurrio un error')
         }
         return next();

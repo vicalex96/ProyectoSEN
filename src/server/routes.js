@@ -70,14 +70,10 @@ module.exports = (app) => {
 
   app.post('/register', (req, res, next)  => {
       return authHelpers.createUser(req, res)
-      .then((response) => {
-      if (response) {
-          res.redirect('/register')
-      }
-      })
       .catch((err) => {
           res.redirect('/register')
-      });  
+      });
+      res.redirect('/register')
   });
 
 app.get('/logout', authHelpers.loginRequired, (req, res, next) => {
