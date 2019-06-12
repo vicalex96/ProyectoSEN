@@ -1,6 +1,7 @@
 
 const rout = require("path")
 const authHelpers = require('../auth/_helpers');
+const servicioGestionUsuario = require('../auth/servicioGestionUsuario');
 const passport = require('../auth/local');
 const fs = require('fs')
 
@@ -77,8 +78,10 @@ module.exports = (app) => {
       })
       .catch((err) => {
           res.redirect('/register')
-      });  
+      });
   });
+
+
 
 app.get('/logout', authHelpers.loginRequired, (req, res, next) => {
       req.logout();
@@ -86,12 +89,16 @@ app.get('/logout', authHelpers.loginRequired, (req, res, next) => {
 
     });
 
-app.get('/userAdministration', function (req, res) {
+app.get('/adminitracionusuario', function (req, res) {
       if (req.isAuthenticated() && req.user.supervisor) {
+        servicioGestionUsuario.pedirTabla(req,res)
+        .then((respuesta)=>{
         res.render('viewUserAdministration',{
           logged: true,
-          user: req.user,
-        })
+            user: req.user,
+            usuarios:respuesta
+          }) })
+
       }else{
         res.redirect('/home')
       }

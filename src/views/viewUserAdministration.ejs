@@ -10,71 +10,7 @@
     <body>
 
     <% include import/viewHeader.ejs %>
-
-    <div class="container  ">
-        <form class=" form-control editor" action="/editor"method="post"
-                enctype="multipart/form-data">
-        <table border="3" class="table table-hover table-light ">
-            <thead class= "">
-                <tr>
-                    <th>#</th>
-                    <th>Nombre de usuario</th>
-                    <th>Codigo de Usuario</th>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Contraseña</th>
-                    <th>Tipo de Usuario</th>
-                    <th>Bloqueado</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <th contentEditable="true">Electrisista1</th>
-                    <th contentEditable="true">SUP-3-19bfcb8</th>
-                    <th contentEditable="true">Manolo</th>
-                    <th contentEditable="true">Martinez</th>
-                    <th contentEditable="true">123+Hola</th>
-                    <th contentEditable="true">Supervisor</th>
-                    <th ><input type="checkbox" name="" value="">
-                    </th>
-                </tr>
-            </tbody>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <th contentEditable="true">Electrisista1</th>
-                    <th contentEditable="true">SUP-3-19bfcb8</th>
-                    <th contentEditable="true">Manolo</th>
-                    <th contentEditable="true">Martinez</th>
-                    <th contentEditable="true">123+Hola</th>
-                    <th contentEditable="true">Supervisor</th>
-                    <th ><input type="checkbox" name="" value="">
-                    </th>
-                </tr>
-            </tbody>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <th contentEditable="true">Electrisista1</th>
-                    <th contentEditable="true">SUP-3-19bfcb8</th>
-                    <th contentEditable="true">Manolo</th>
-                    <th contentEditable="true">Martinez</th>
-                    <th contentEditable="true">123+Hola</th>
-                    <th contentEditable="true">Supervisor</th>
-                    <th ><input type="checkbox" name="" value="">
-                    </th>
-                </tr>
-            </tbody>
-        </table>
-
-        <div class="container text-center col-lg-6 ">
-            <input type="submit" value= "guardar" class="btn btn-success">
-        </div>
-        </form>
-    </div>
-
-
+    <% include import/partes/parteListaUsuario.ejs %>
     <% include import/BSConnect.ejs %>
   </body>
 </html>
