@@ -1,0 +1,126 @@
+<div class=" container modal-dialog col-md-6 mb-3">
+    <div class="color modal-content text-center">
+        <form class=" needs-validation" action="/nodo" method="post" novalidate>
+            <br>
+            <h4 class= " text-center"> Registrar un nodo </h4>
+            <h6 class= " text-center"> campos obligatorios* </h6>
+
+            <% if (message1.length > 0) { %>
+              <div class="alert alert-danger">
+                <%= message1 %>
+              </div>
+            <% } %>
+
+            <div class="col-md-12 mb-3">
+            <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text">°</span>
+            </div>
+            <input type="text" class="form-control" name="nombreNodo" id="nodeName"
+                   minlength="4" maxlength="50" placeholder="nombre de nodo*"
+                   aria-describedby="inputGroupPrepend" required>
+            <div class="invalid-feedback">
+                campo no puede estar vacio
+            </div>
+            </div>
+            </div>
+
+            <div class=" col-md-6 mb-3">
+            <div class=" form-group">
+                <select name="tipoNodo" class="custom-select browser-default" required>
+                <option value="">tipo de nodo*</option>
+                    <option value="Generacion">Central de Generación</option>
+                    <option value="Termoelectrica">Central Termoeléctrica</option>
+                    <option value="Distribucion">Centro de Distribución</option>
+                </select>
+                <div class="invalid-feedback">Seleciona una opcion</div>
+            </div>
+            </div>
+
+            <hr/>
+            <h6 class= " text-center"> Latitud </h6>
+            <div class="form-row center">
+                <div class="col-md-2 mb-1">
+                <div class="form-group">
+                    <select name="latitud_grados" class="custom-select browser-default" required>
+                    <option value="">°</option>
+                    <% for(i=0; i<=12; i++){ %>
+                        <option value="<%=i%>"><%= i %></option>
+                    <% } %>
+                    </select>
+                    <div class="invalid-feedback">Seleciona una opcion</div>
+                </div>
+                </div>
+
+                <div class="col-md-2 mb-1">
+                <div class="form-group">
+                    <select name="latitud_minutos" class="custom-select browser-default" required>
+                    <option value="">'</option>
+                    <% for(i=0; i<=60; i++){ %>
+                        <option value="<%=i%>"><%= i %></option>
+                    <% } %>
+                    </select>
+                    <div class="invalid-feedback">Seleciona una opcion</div>
+                </div>
+                </div>
+
+                <div class="col-md-2 mb-1">
+                <div class="form-group">
+                    <select name="latitud_segundos" class="custom-select browser-default" required>
+                    <option value="">"</option>
+                    <% for(i=0; i<=60; i++){ %>
+                        <option value="<%=i%>"><%= i %></option>
+                    <% } %>
+                    </select>
+                    <div class="invalid-feedback">Seleciona una opcion</div>
+                </div>
+                </div>
+            </div>
+
+            <hr/>
+            <h6 class= " text-center"> Longitud </h6>
+            <div class="form-row center">
+
+                <div class="col-md-2 mb-3">
+                <div class="form-group">
+                    <select name="longitud_grados" class="custom-select browser-default" required>
+                    <option value="">°</option>
+                    <% for(i=-73; i<=-59; i++){ %>
+                        <option value="<%=i%>"><%= i %></option>
+                    <% } %>
+                    </select>
+                    <div class="invalid-feedback">Seleciona una opcion</div>
+                </div>
+                </div>
+
+                <div class="col-md-2 mb-3">
+                <div class="form-group">
+                    <select name="longitud_minutos" class="custom-select browser-default" required>
+                    <option value="">'</option>
+                    <% for(i=0; i<=60; i++){ %>
+                        <option value="<%=i%>"><%= i %></option>
+                    <% } %>
+                    </select>
+                    <div class="invalid-feedback">Seleciona una opcion</div>
+                </div>
+                </div>
+
+                <div class="col-md-2 mb-3">
+                <div class="form-group">
+                    <select name="longitud_segundos" class="custom-select browser-default" required>
+                    <option value="">"</option>
+                    <% for(i=0; i<=60; i++){ %>
+                        <option value="<%=i%>"><%= i %></option>
+                    <% } %>
+                    </select>
+                    <div class="invalid-feedback">Seleciona una opcion</div>
+                </div>
+                </div>
+
+
+            </div>
+
+            <button class="btn btn-success btn-sm mb-4" type="submit"> Crear </button>
+          </form>
+    </div>
+</div>

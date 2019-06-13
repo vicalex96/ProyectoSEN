@@ -30,7 +30,7 @@ passport.use(new LocalStrategy(options, (req, username, password, done) => {
           }
           return done(null, usuario);
       }
-      return done(null, false, '')
+
   })
   .catch((err) => { return done(null, false, req.flash('loginMessage', 'Error no esperado: '+ err)) });
 }));

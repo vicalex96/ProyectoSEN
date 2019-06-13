@@ -1,6 +1,9 @@
 
 const rout = require("path")
 const authHelpers = require('../auth/_helpers');
+const servicioNodo = require('../auth/servicioNodo');
+const servicioAsociacion = require('../auth/servicioAsociacion');
+const servicioAccion = require('../auth/servicioAccion');
 const passport = require('../auth/local');
 const fs = require('fs')
 
@@ -94,16 +97,7 @@ app.get('/userAdministration', function (req, res) {
     })
 
 
-    app.get('/grafo', function (req, res) {
-          if (req.isAuthenticated() && req.user.supervisor) {
-            res.render('viewGrafo',{
-              logged: true,
-              user: req.user,
-            })
-          }else{
-            res.redirect('/home')
-          }
-        })
+    
 
     app.get('/bitacora', function (req, res) {
               if (req.isAuthenticated() && req.user.supervisor) {

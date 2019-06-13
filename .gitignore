@@ -1,4 +1,4 @@
 node_modules
-src\connection.js
-src\knexfile.js
+connection
+knexfile
 

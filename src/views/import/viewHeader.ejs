@@ -20,28 +20,50 @@
 
       <% if (logged == true) { %>
       <li class="nav-item">
-        <a class="nav-link" href="/Perfil">  Perfil</a>
+        <a class="nav-link" href="/perfil">  Perfil</a>
       </li>
+      <% if (user.supervisor == false) { %>
+          <li class="nav-item">
+              <a class="nav-link" href="/grafo">  Gestion Electica</a>
+          </li>
 
-      <li class="nav-item">
-        <a class="nav-link" href="/Grafo">  Grafo</a>
-      </li>
+          <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+              role="button" data-toggle="dropdown" aria-haspopup="true"
+              aria-expanded="false">
+                  Gestion Electica
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item " href="/grafo/nodo"> ver tabla Nodo</a>
+                  <a class="dropdown-item " href="/grafo/Asociacion"> ver tabla Asociacion</a>
+                  <a class="dropdown-item " href="/grafo/crear/nodo"> crear Nodo</a>
+                  <a class="dropdown-item " href="/grafo/crear/Asociacion"> crear Asociacion</a>
+                  <a class="dropdown-item " href="/grafo/eliminar/nodo"> Eliminar Nodo</a>
+                  <a class="dropdown-item " href="/grafo/eliminar/Asociacion"> Eliminar Asociacion</a>
+              </div>
+          </li>
+      <% } %>
 
       <% if (user.supervisor == true) { %>
+          <li class="nav-item">
+            <a class="nav-link" href="/grafo">  Ver Grafo</a>
+          </li>
 
-      <li class="nav-item">
-        <a class="nav-link" href="/Bitacora">  Bitacora</a>
-      </li>
+          <li class="nav-item">
+              <a class="nav-link" href="/bitacora">  Bitacora</a>
+          </li>
 
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Gestion de Usuarios
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item " href="/userAdministration"> editar Datos</a>
-          <a class="dropdown-item " href="/register"> crear Usuario</a>
-        </div>
-      </li>
+          <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+              role="button" data-toggle="dropdown" aria-haspopup="true"
+              aria-expanded="false">
+                  Gestion de Usuarios
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item " href="/userAdministration"> editar Datos</a>
+                  <a class="dropdown-item " href="/register"> crear Usuario</a>
+              </div>
+          </li>
       <% } %>
         <li class="nav-item ">
           <a class="nav-link" href="/logout">  Desconectar</a>
@@ -50,7 +72,9 @@
 
           <ul class="nav navbar-nav  navbar-right">
             <span class="navbar-text">
-                <%= user.nombre_usuario %>  - <%= (user.id*300000).toString(16) %>
+                <%= user.nombre_usuario %>
+                <% if(user.supervisor){%> SUP<%} else {%>
+                OPE<%}%>-<%=user.id%>-<%= (user.id+3000000).toString(16) %>
               </span>
 
           </ul>
