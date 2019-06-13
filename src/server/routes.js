@@ -96,19 +96,23 @@ app.get('/userAdministration', function (req, res) {
       }
     })
 
-
-    
-
     app.get('/bitacora', function (req, res) {
-              if (req.isAuthenticated() && req.user.supervisor) {
+        if (req.isAuthenticated()) {
+            servicioAccion.pedirTabla(req, res)
+            .then((tablaAccion) => {
                 res.render('viewBitacora',{
-                  logged: true,
-                  user: req.user,
+                    logged: true,
+                    user: req.user,
+                    acciones: tablaAccion
                 })
-            }else{
-                res.redirect('/home')
-              }
             })
+            .catch((error) => {
+
+            });
+        }else{
+            res.redirect('/home')
+        }
+    })
 
   function handleLogin(req, user) {
     return new Promise((resolve, reject) => {

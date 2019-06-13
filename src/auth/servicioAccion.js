@@ -12,10 +12,7 @@ function crearAccion(req, res, tipoDeAccion, objeto, operador) {
 
 
 function pedirTabla(req, res){
-    return  knex('accion').select('id',
-                            knex('nodo').select('nombre').where({id: 'id_nodo1'}),
-                            knex('nodo').select('nombre').where({id: 'id_nodo2'}),
-                            'capacidad')
+    return knex.select().table('accion')
 }
 
 

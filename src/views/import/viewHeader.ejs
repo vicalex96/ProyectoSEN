@@ -45,8 +45,16 @@
       <% } %>
 
       <% if (user.supervisor == true) { %>
-          <li class="nav-item">
-            <a class="nav-link" href="/grafo">  Ver Grafo</a>
+          <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+              role="button" data-toggle="dropdown" aria-haspopup="true"
+              aria-expanded="false">
+                 Grafo
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item " href="/grafo/nodo"> ver tabla Nodo</a>
+                  <a class="dropdown-item " href="/grafo/Asociacion"> ver tabla Asociacion</a
+              </div>
           </li>
 
           <li class="nav-item">

@@ -8,6 +8,43 @@ const passport = require('../auth/local');
 const fs = require('fs')
 
 module.exports = (app) => {
+    app.get('/grafo/nodo', function (req, res) {
+        if (req.isAuthenticated()) {
+            servicioNodo.pedirTabla(req, res)
+            .then((tablaNodo) => {
+                res.render('viewGrafoNodo',{
+                    logged: true,
+                    user: req.user,
+                    nodos: tablaNodo
+                })
+            })
+            .catch((error) => {
+
+            });
+        }else{
+          res.redirect('/home')
+        }
+    })
+
+    app.get('/grafo/asociacion', function (req, res) {
+        if (req.isAuthenticated()) {
+            servicioNodo.pedirTabla(req, res)
+            .then((tablaNodo) => {
+                res.render('viewGrafoAsociacion',{
+                    logged: true,
+                    user: req.user,
+                    Asociaciones: tablaAsociacion
+                })
+            })
+            .catch((error) => {
+
+            });
+
+        }else{
+            res.redirect('/home')
+        }
+    })
+
 
         app.get('/grafo', function (req, res) {
           if (req.isAuthenticated()) {
