@@ -1,0 +1,68 @@
+<div class=" container modal-dialog col-md-6 mb-3">
+    <div class="color modal-content text-center">
+        <form class=" needs-validation" action="/asociacion" method="post" novalidate>
+            <br>
+            <h4 class= " text-center"> Registrar un asociacion </h4>
+            <h6 class= " text-center"> campos obligatorios* </h6>
+
+            <% if (message2.length > 0) { %>
+              <div class="alert alert-danger">
+                <%= message2 %>
+              </div>
+            <% } %>
+
+            <hr/>
+
+            <div class="col-md-8 mb-3">
+            <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text">W</span>
+            </div>
+            <input type="text" class="form-control" name="capacidad" id="capacidad"
+                    maxlength="8" placeholder="capacidad en Kilovatios*"
+                    pattern="([0-9]{1,8})+([.]{0,1})+([1-9]{0,2})"
+                   aria-describedby="inputGroupPrepend" required>
+                   <div class="invalid-feedback">
+                       campo no puede estar vacio <br>
+                       unidades Kilovatios <br>
+                       solo 2 decimales
+                   </div>
+            </div>
+            </div>
+            <hr/>
+
+            <div class="col-md-8 mb-1">
+            <div class="form-group">
+                <select name="primerNodo" class="custom-select browser-default" required>
+                <option value="">selecciona nodo de salida</option>
+                    <% for(i=0; i< nodos.length; i++){ %>
+                        <option value="<%= nodos[i].id +"-"+ nodos[i].nombre +"-"+
+                        nodos[i].tipo_nodo%>">
+                            <%= nodos[i].nombre %>(<%= nodos[i].tipo_nodo %>)
+                        </option>
+                    <% } %>
+                </select>
+                <div class="invalid-feedback">Seleciona una opcion</div>
+            </div>
+            </div>
+
+            <div class="col-md-8 mb-1">
+            <div class="form-group">
+                <select name="segundoNodo" class="custom-select browser-default" required>
+                <option value="">selecciona nodo de llegada </option>
+                    <% for(i=0; i< nodos.length; i++){ %>
+                        <option value="<%= nodos[i].id +"-"+ nodos[i].nombre +"-"+
+                        nodos[i].tipo_nodo%>">
+                            <%= nodos[i].nombre %>(<%= nodos[i].tipo_nodo %>)
+                        </option>
+                    <% } %>
+                </select>
+                <div class="invalid-feedback">Seleciona una opcion</div>
+            </div>
+
+            </div>
+
+            <button class="btn btn-success btn-sm mb-4" type="submit"> Crear </button>
+          </form>
+    </div>
+</div>

@@ -1,0 +1,135 @@
+<!DOCTYPE html> <!--- View Registrar Usuario -->
+<html lang="en" dir="ltr">
+     <head>
+        <% include import/viewhtmlHeader.ejs %>
+        <link rel="stylesheet" href="css/standardStile.css">
+        <link rel="stylesheet" href="css/registerStile.css">
+
+    </head>
+    <body>
+        <% include import/viewHeader.ejs %>
+
+        <div class=" container modal-dialog text-center col-lg-8">
+        <div class="color modal-content">
+            <form class=" needs-validation" action="/register" method="post" novalidate>
+                <br>
+                <h4 class= " text-center"> Registrar un nuevo usuario </h4>
+                <h6 class= " text-center"> campos obligatorios* </h6>
+
+                <% if (message.length > 0) { %>
+                  <div class="alert alert-danger">
+                    <%= message %>
+                  </div>
+                <% } %>
+
+                <div class="col-md-8 mb-3">
+                <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="username">@</span>
+                </div>
+                <input type="text" class="form-control" name="userName" id="userName"
+                       minlength="4" maxlength="12" placeholder="nombre de usuario*"
+                       aria-describedby="inputGroupPrepend" required>
+                <div class="invalid-feedback">
+                    Requerido: <br>
+                    minimo 4 caracteres <br>
+                    maximo 12
+                </div>
+                </div>
+                </div>
+
+                <div class="col-md-8 mb-3">
+                <div class="form-group">
+                    <select name="userType" class="custom-select browser-default" required>
+                        <option value="">Selecciona el tipo de usuario*</option>
+                        <option value="Operador">Operador</option>
+                        <option value="Supervisor">Supervisor</option>
+                    </select>
+                    <div class="invalid-feedback">Seleciona una opcion</div>
+                </div>
+                </div>
+
+                <div class="form-row center">
+                <div class="col-md-6 mb-3">
+
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroupPrepend">N</span>
+                        </div>
+                        <input type="text" class="form-control" name="name" id="name"
+                            maxlength="50" placeholder="Nombre*"
+                            aria-describedby="inputGroupPrepend" required>
+                        <div class="invalid-feedback">
+                            introduce el nombre
+                        </div>
+                    </div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroupPrepend">A</span>
+                      </div>
+                      <input type="text" class="form-control" name="lastname" id="lastname"
+                             maxlength="50" placeholder="apellido*"
+                             aria-describedby="inputGroupPrepend" required>
+                      <div class="invalid-feedback">
+                        introduce el apellido
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="form-row center">
+                <div class="col-md-6 mb-3">
+
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroupPrepend">P</span>
+                        </div>
+                        <input type="password" class="form-control" name="password"
+                            id="password" placeholder="Contraseña*"
+                            aria-describedby="inputGroupPrepend"
+                            pattern="(?=.*\d)(?=.*[!@#$%^*+-/~_.,?¡¿=°|¬])(?=.*[0-9])(?=.*[a-zÑ])(?=.*[A-ZÑ]).{8,}"
+                            required>
+                        <div class="invalid-feedback">
+                            Requerido: <br>
+                            minimo 8 caracteres<br>
+                            1 mayuscula <br>
+                            1 minuscula<br>
+                            1 numero<br>
+                            1 caracter especial<br>
+                            !@#$%^*+-/~_.,?¡¿=°|¬
+                        </div>
+                    </div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroupPrepend">R</span>
+                      </div>
+                      <input type="password" class="form-control" name="repassword" id="repassword"
+                             placeholder="repita Contraseña*"
+                             aria-describedby="inputGroupPrepend"
+                             pattern="(?=.*\d)(?=.*[!@#$%^*+-/~_.,?¡¿=°|¬])(?=.*[0-9])(?=.*[a-zÑ])(?=.*[A-ZÑ]).{8,}"
+                             required>
+                      <div class="invalid-feedback">
+                         tiene que ser igual a la contraseña
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+                <button class="btn btn-success btn-sm mb-4" type="submit"> Registrar</button>
+              </form>
+      </div>
+  </div>
+
+        <% include import/BSConnect.ejs %>
+
+
+        <script src="js/registerValidation.js"></script>
+    </body>
+</html>

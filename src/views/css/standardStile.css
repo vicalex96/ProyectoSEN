@@ -1,0 +1,65 @@
+* {
+  padding: 0;
+  margin: 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+body {
+  background: url("/img/guri.jpg");
+  background-size: 100%;
+  background-attachment: fixed;
+  padding-top: 62px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.boxerise{
+    background-color: #000;
+    padding: 0 200px 0 200px
+}
+.center{
+ color: #fff;
+ font-size: 20px;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ padding: 0 20px 0 20px;
+
+}
+.textBorder{
+    -webkit-text-stroke-width: 1px;
+   -webkit-text-stroke-color: #fff;
+}
+
+.navbar{
+    width:100%;
+    position: fixed;
+    top:0;
+    z-index:3000;
+
+}
+
+.centrade{
+    margin: 30px auto 30px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.color-white{
+    background-color:#fff;
+}
+
+.ajustar{
+    width: 50px
+}
+.ajustar{
+    width: 60px
+}
+
+.esconde{
+    width: 0px
+}

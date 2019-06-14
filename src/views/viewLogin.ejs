@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+        <% include import/viewhtmlHeader.ejs %>
+        <link rel="stylesheet" href="css/standardStile.css">
+        <link rel="stylesheet" href="css/loginStile.css">
+  </head>
+  <body>
+    <body>
+        <% include import/viewHeader.ejs %>
+
+        <div class=" container modal-dialog text-center">
+            <div class="modal-content">
+
+              <div class=" user-img">
+                <img src="img/enchufe.png">
+              </div>
+
+              <h1 class="text-center">
+                <span class="fa fa-sign-in"></span> Login
+              </h1>
+
+              <% if (message.length > 0) { %>
+                <div class="alert alert-danger">
+                  <%= message %>
+                </div>
+              <% } %>
+
+      <form class="needs-validation" action="/login" method="post" novalidate>
+
+        <div class="form-row center">
+          <div class="col-md-8 mb-3">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroupPrepend">U</span>
+              </div>
+              <input type="user" class="form-control" name="username" id="validationCustomUsername"
+                     maxlength="12" placeholder="nombre de usuario"
+                     aria-describedby="inputGroupPrepend" required>
+              <div class="invalid-feedback">
+                introduce un nombre de usuario
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row center">
+          <div class="col-md-8 mb-3">
+
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroupPrepend">P</span>
+              </div>
+              <input type="password" class="form-control" name="password" id="validationCustomUsername" placeholder="Contraseña"
+                aria-describedby="inputGroupPrepend" required>
+              <div class="invalid-feedback">
+                introduce una constraseña
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-success btn-sm" type="submit"> ingresar</button>
+      </form>
+
+
+  </div>
+</div>
+
+ <% include import/BSConnect.ejs %>
+ <script src="js/loginValidation.js"></script>
+  </body>
+</html>

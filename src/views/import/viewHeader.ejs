@@ -1,0 +1,87 @@
+
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #75a344;">
+    <h6 class="navbar-brand" href="#"> SEN </h6>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/home">Inicio <span class="sr-only">(current)</span></a>
+      </li>
+
+      <% if (logged == false) { %>
+        <li class="nav-item">
+          <a class="nav-link" href="/login"> Ingresar</a>
+        </li>
+      <% } %>
+
+      <% if (logged == true) { %>
+      <li class="nav-item">
+        <a class="nav-link" href="/perfil">  Perfil</a>
+      </li>
+      <% if (user.supervisor == false) { %>
+          <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+              role="button" data-toggle="dropdown" aria-haspopup="true"
+              aria-expanded="false">
+                  Gestion Electica
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item " href="/grafo/nodo"> ver tabla Nodo</a>
+                  <a class="dropdown-item " href="/grafo/Asociacion"> ver tabla Asociacion</a>
+                  <a class="dropdown-item " href="/grafo/crear/nodo"> crear Nodo</a>
+                  <a class="dropdown-item " href="/grafo/crear/Asociacion"> crear Asociacion</a>
+                  <a class="dropdown-item " href="/grafo/editar/Asociacion"> editar Asociacion</a>
+
+              </div>
+          </li>
+      <% } %>
+
+      <% if (user.supervisor == true) { %>
+          <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+              role="button" data-toggle="dropdown" aria-haspopup="true"
+              aria-expanded="false">
+                 Grafo
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item " href="/grafo/nodo"> ver tabla Nodo</a>
+                  <a class="dropdown-item " href="/grafo/Asociacion"> ver tabla Asociacion</a
+              </div>
+          </li>
+
+          <li class="nav-item">
+              <a class="nav-link" href="/bitacora">  Bitacora</a>
+          </li>
+
+          <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+              role="button" data-toggle="dropdown" aria-haspopup="true"
+              aria-expanded="false">
+                  Gestion de Usuarios
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item " href="/userAdministration"> editar Datos</a>
+                  <a class="dropdown-item " href="/register"> crear Usuario</a>
+              </div>
+          </li>
+      <% } %>
+        <li class="nav-item ">
+          <a class="nav-link" href="/logout">  Desconectar</a>
+        </li>
+    </ul>
+
+          <ul class="nav navbar-nav  navbar-right">
+            <span class="navbar-text">
+                <%= user.nombre_usuario %>
+                <% if(user.supervisor){%> SUP<%} else {%>
+                OPE<%}%>-<%=user.id%>-<%= (user.id+3000000).toString(16) %>
+              </span>
+
+          </ul>
+          <% } %>
+  </div>
+</nav>

@@ -1,0 +1,33 @@
+<!DOCTYPE html> 
+<html lang="en" dir="ltr">
+    <head>
+        <% include import/viewhtmlHeader.ejs %>
+        <link rel="stylesheet" href="css/standardStile.css">
+        <link rel="stylesheet" href="css/registerStile.css">
+
+    </head>
+    <body>
+
+        <% include import/viewHeader.ejs %>
+
+        <% if (messageAction.length > 0) { %>
+          <div class="alert alert-danger">
+            <%= messageAction %>
+          </div>
+        <% } %>
+
+            <% include import/partes/parteRegistrarNodo.ejs %>
+
+            <% include import/partes/parteRegistrarAsociacion.ejs %>
+
+            <% include import/partes/parteListaNodos.ejs %>
+
+            <% include import/partes/tablamodelo.ejs %>
+
+
+
+
+        <script src="js/grafoValidation.js"></script>
+        <% include import/BSConnect.ejs %>
+    </body>
+</html>

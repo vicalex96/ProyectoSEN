@@ -1,0 +1,11 @@
+.color{
+background-color:#75a344;
+}
+
+.invalid-feedback{
+    background-color:#BF140E;
+    border-radius: 5px;
+    border-color: #000;
+    font-size: 16px;
+    color: #FFF;
+}

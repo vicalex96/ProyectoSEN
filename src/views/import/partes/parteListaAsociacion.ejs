@@ -1,0 +1,33 @@
+<div class=" container centrade color-white">
+	<div class="row">
+	<table id="table" class="fixed table table-striped table-bordered table-dark" style="width:100%">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>nodo de salida</th>
+                <th>nodo de llegada</th>
+                <th>relacion</th>
+                <th>capacidad</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for(i=0; i < asociaciones.length; i++){ %>
+                <tr>
+                    <th ><%= asociaciones[i].id %></th>
+                    <th ><%= asociaciones[i].nombre_nodo1 %></th>
+                    <th ><%= asociaciones[i].nombre_nodo2 %></th>
+                    <th ><%= asociaciones[i].tipo_nodo1 %> -> <%= asociaciones[i].tipo_nodo2 %> </th>
+                    <th ><%= asociaciones[i].capacidad %></th>
+                    <th>
+						<form class="" action="/grafo/eliminar/asociacion" method="post">
+							<input type="" class="invisible esconde" name="asociacionid" id="asociacionid"
+	                          value="<%= asociaciones[i].id %>">
+							  <input type="submit" value= "eliminar" class=" btn btn-danger">
+						</form>
+					</th>
+            	</tr>
+            <% } %>
+		</tbody>
+    </table>
+	</div>
+</div>
