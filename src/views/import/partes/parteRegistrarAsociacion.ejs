@@ -35,10 +35,12 @@
             <div class="form-group">
                 <select name="primerNodo" class="custom-select browser-default" required>
                 <option value="">selecciona nodo de salida</option>
-                <% for(i=0; i< nodos.length; i++){ %>
-                    <option value="<%= nodos[i].id +"-"+ nodos[i].tipo_nodo %>">
-                        <%= nodos[i].nombre %>(<%= nodos[i].tipo_nodo %>)</option>
-                <% } %>
+                    <% for(i=0; i< nodos.length; i++){ %>
+                        <option value="<%= nodos[i].id +"-"+ nodos[i].nombre +"-"+
+                        nodos[i].tipo_nodo%>">
+                            <%= nodos[i].nombre %>(<%= nodos[i].tipo_nodo %>)
+                        </option>
+                    <% } %>
                 </select>
                 <div class="invalid-feedback">Seleciona una opcion</div>
             </div>
@@ -48,9 +50,11 @@
             <div class="form-group">
                 <select name="segundoNodo" class="custom-select browser-default" required>
                 <option value="">selecciona nodo de llegada </option>
-                    <% for(i=0; i<nodos.length; i++){ %>
-                        <option value="<%= nodos[i].id +"-"+ nodos[i].tipo_nodo %>">
-                            <%= nodos[i].nombre %> (<%= nodos[i].tipo_nodo %>)</option>
+                    <% for(i=0; i< nodos.length; i++){ %>
+                        <option value="<%= nodos[i].id +"-"+ nodos[i].nombre +"-"+
+                        nodos[i].tipo_nodo%>">
+                            <%= nodos[i].nombre %>(<%= nodos[i].tipo_nodo %>)
+                        </option>
                     <% } %>
                 </select>
                 <div class="invalid-feedback">Seleciona una opcion</div>
