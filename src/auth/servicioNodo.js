@@ -29,7 +29,20 @@ function pedirTabla(){
     return knex.select().table('nodo')
 }
 
+
+function eliminarNodo(req,res) {
+   return new Promise(function(resolve,reject){
+           knex('nodo').where({ nombre: req.body.nodoNombre}).first().del()
+           .then(()=>{
+                servicioAccion.crearAccion(req,res,"Eliminar", "nodo: " + req.body.nodoNombre, req.user)
+               .then((resp)=>{})
+                resolve(true)
+           })
+        })
+   }
+
   module.exports = {
     crearNodo,
-    pedirTabla
+    pedirTabla,
+    eliminarNodo
   };

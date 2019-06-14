@@ -1,0 +1,40 @@
+<div class=" container centrade color-white">
+	<div class="row">
+	<table id="table" class="fixed table table-striped table-bordered table-dark" style="width:100%">
+        <thead>
+            <tr>
+                <th>id</th>
+				<th>codigo</th>
+                <th>nombre de usaurio</th>
+                <th>nombre</th>
+                <th>apellido</th>
+                <th>cargo</th>
+                <th>bloqueado</th>
+            </tr>
+        </thead>
+        <tbody>
+			<% for(i=0; i < usuarios.length; i++){ %>
+                <tr>
+					<th ><%= usuarios[i].id %></th>
+					<th ><% if(usuarios[i].supervisor){%> SUP<%} else {%>
+	                OPE<%}%>-<%=usuarios[i]%>-<%= (usuarios[i].id+3000000).toString(16) %></th>
+                    <th ><%= usuarios[i].nombre_usuario %></th>
+                    <th ><%= usuarios[i].nombre %></th>
+                    <th ><%= usuarios[i].apellido %></th>
+					<th ><% if(usuarios[i].supervisor){%>
+						supervisor
+					<% }else{%>
+						operador
+					<%}%> </th>
+					<th >
+						<input type="checkbox" name="bloqueado"
+						<%if(usuarios[i].bloqueado){%>
+							checked <%}%> disabled>
+
+					</th>
+                </tr>
+            <% } %>
+		</tbody>
+    </table>
+	</div>
+</div>

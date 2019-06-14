@@ -1,0 +1,50 @@
+<div class=" container modal-dialog col-md-6 mb-3">
+    <div class="color modal-content text-center">
+        <form class=" needs-validation" action="/grafo/editar/asociacion" method="post" novalidate>
+            <br>
+            <h4 class= " text-center"> Editar una asociacion </h4>
+
+            <% if (message.length > 0) { %>
+              <div class="alert alert-danger">
+                <%= message %>
+              </div>
+            <% } %>
+
+            <hr/>
+
+            <div class="col-md-8 mb-1">
+            <div class="form-group">
+                <select name="asociacionid" class="custom-select browser-default" required>
+                <option value="">selecciona asociacion</option>
+                    <% for(i=0; i< asociaciones.length; i++){ %>
+                        <option value="<%= asociaciones[i].id%>">
+                            <%= asociaciones[i].nombre_nodo1 %> -><%= asociaciones[i].nombre_nodo2 %>
+                        </option>
+                    <% } %>
+                </select>
+                <div class="invalid-feedback">Seleciona una asociacion</div>
+            </div>
+            </div>
+
+            <div class="col-md-8 mb-3">
+            <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text">W</span>
+            </div>
+            <input type="text" class="form-control" name="capacidad" id="capacidad"
+                    maxlength="8" placeholder="nueva capacidad en Kilovatios*"
+                    pattern="([0-9]{1,8})+([.]{0,1})+([1-9]{0,2})"
+                   aria-describedby="inputGroupPrepend" required>
+                   <div class="invalid-feedback">
+                       campo no puede estar vacio <br>
+                       unidades Kilovatios <br>
+                       solo 2 decimales
+                   </div>
+            </div>
+            </div>
+            <hr/>
+
+            <button class="btn btn-success btn-sm mb-4" type="submit"> Crear </button>
+          </form>
+    </div>
+</div>

@@ -82,10 +82,15 @@ function createUser(req, res) {
     })
   }
 
+  function pedirTabla(){
+      return knex.select().table('usuario')
+  }
+
   module.exports = {
     comparePass,
     createUser,
     loginRequired,
     adminRequired,
-    loginRedirect
+    loginRedirect,
+    pedirTabla
   };

@@ -6,9 +6,8 @@ async function crearAsociacion(req, res) {
     nodo1 = campo.primerNodo.split("-")
     nodo2 = campo.segundoNodo.split("-")
     compatible = true;
-    console.log("1")
     if(nodo1[2] === "Generacion" && nodo2[2] === "Termoelectrica"){
-        compatible = await comprobarCompatibilidad(res,req,nodo2[1],nodo2[2])
+        compatible = await comprobarCompatibilidad(req,res,nodo2[1],nodo2[2])
     }
 
     if(compatible && (
@@ -17,7 +16,7 @@ async function crearAsociacion(req, res) {
         nodo1[2] === "Termoelectrica" && nodo2[2]  ==="Distribucion" ||
         nodo1[2] === "Distribucion"   && nodo2[2] ==="Distribucion"
     )&& nodo1[2] != nodo2){
-        respuesta = await crearAsociacionDAO(res,req,nodo1,nodo2,campo)
+        respuesta = await crearAsociacionDAO(req,res,nodo1,nodo2,campo)
         if(respuesta){
             req.flash('asociacionMessage','Asociacion creada')
         }else {
@@ -30,9 +29,8 @@ async function crearAsociacion(req, res) {
 
 }
 
-function crearAsociacionDAO(res,req,nodo1,nodo2,campo){
+function crearAsociacionDAO(req,res,nodo1,nodo2,campo){
     return new Promise(function(resolve,reject){
-        console.log("ejecuta")
         resolve(true)
         knex('asociacion').insert({
             nombre_nodo1:nodo1[1],
@@ -57,7 +55,7 @@ function crearAsociacionDAO(res,req,nodo1,nodo2,campo){
     })
  }
 
-function comprobarCompatibilidad(res, req, nombreNodo,tipoDeNodo) {
+function comprobarCompatibilidad(req, res, nombreNodo,tipoDeNodo) {
    return new Promise(function(resolve,reject){
        knex('asociacion').where({ nombre_nodo1: nombreNodo}).first()
        .then((asociacion)=>{
@@ -77,7 +75,33 @@ function pedirTabla(req, res){
     return knex.select().table('asociacion')
 }
 
+function eliminarAsociacion(req, res) {
+   return new Promise(function(resolve,reject){
+       knex('asociacion').where({ id: req.body.asociacionid}).first().del()
+       .then(()=>{
+           servicioAccion.crearAccion(req,res,"Eliminar", "asociacion de id : " + req.body.asociacionid, req.user)
+          .then((resp)=>{})
+           resolve(true)
+       })
+   })
+}
+
+
+function editaAsociacion(req, res) {
+   return new Promise(function(resolve,reject){
+       knex('asociacion').where({ id: req.body.asociacionid}).update({ capacidad: req.body.capacidad})
+       .then(()=>{
+           servicioAccion.crearAccion(req,res,"editar", "asociacion de id : " + req.body.asociacionid, req.user)
+          .then((resp)=>{})
+           resolve(true)
+       })
+   })
+}
+
+
   module.exports = {
     crearAsociacion,
-    pedirTabla
+    pedirTabla,
+    eliminarAsociacion,
+    editaAsociacion
   };

@@ -87,10 +87,18 @@ app.get('/logout', authHelpers.loginRequired, (req, res, next) => {
 
 app.get('/userAdministration', function (req, res) {
       if (req.isAuthenticated() && req.user.supervisor) {
-        res.render('viewUserAdministration',{
-          logged: true,
-          user: req.user,
-        })
+
+        authHelpers.pedirTabla(req, res)
+        .then((tablaUsuarios) => {
+            res.render('viewUserAdministration',{
+                logged: true,
+                user: req.user,
+                usuarios: tablaUsuarios,
+               })
+           })
+           .catch((error) => {
+
+           })
       }else{
         res.redirect('/home')
       }

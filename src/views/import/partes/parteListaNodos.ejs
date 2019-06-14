@@ -1,6 +1,6 @@
 <div class=" container centrade color-white">
 	<div class="row">
-	<table id="table" class="table table-striped table-bordered table-dark" style="width:100%">
+	<table id="table" class="fixed table table-striped table-bordered table-dark" style="width:100%">
         <thead>
             <tr>
                 <th>id</th>
@@ -8,7 +8,7 @@
                 <th>latitud</th>
                 <th>longitud</th>
                 <th>tipo de nodo</th>
-                <th>editar</th>
+
                 <th>eliminar</th>
             </tr>
         </thead>
@@ -20,8 +20,13 @@
                     <th ><%= nodos[i].latitud %></th>
                     <th ><%= nodos[i].longitud %></th>
                     <th ><%= nodos[i].tipo_nodo %></th>
-                    <th ><input type="button" value= "editar" class="btn btn-success"></th>
-                    <th ><input type="button" value= "eliminar" class=" btn btn-danger"></th>
+
+                    <th class="ajustar"><form class="" action="/grafo/eliminar/nodo" method="post">
+						<input type="" class="invisible esconde" name="nodoNombre" id="nodoNombre"
+	                          value="<%= nodos[i].nombre %>">
+						<input type="submit" value= "eliminar" class=" btn btn-danger">
+						</form>
+					</th>
                 </tr>
             <% } %>
 		</tbody>

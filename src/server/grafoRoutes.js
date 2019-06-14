@@ -9,6 +9,8 @@ const fs = require('fs')
 
 module.exports = (app) => {
 
+
+
     app.get('/grafo/crear/nodo', function (req, res) {
       if (req.isAuthenticated() && !req.user.superviso) {
           servicioNodo.pedirTabla(req, res)
@@ -105,7 +107,7 @@ module.exports = (app) => {
                         logged: true,
                         user: req.user,
                         nodos: tablaNodo,
-                        Asociaciones: tablaAsociacion
+                        asociaciones: tablaAsociacion
                       })
                   }else{
                       res.render('viewGrafo',{
@@ -115,7 +117,7 @@ module.exports = (app) => {
                         message2: req.flash('asociacionMessage'),
                         messageAction: req.flash('accionMessage'),
                         nodos: tablaNodo,
-                        Asociaciones: tablaAsociacion
+                        asociaciones: tablaAsociacion
                       })
                   }
               })
@@ -137,7 +139,7 @@ module.exports = (app) => {
             req.flash('nodoMessage','Nodo creado')
             servicioAccion.crearAccion(req,res,"crear", "nodo", req.user)
             .then((resp)=>{})
-            res.redirect('/grafo')
+            res.redirect('/grafo/crear/nodo')
 
         })
         .catch((error) => {
@@ -148,18 +150,71 @@ module.exports = (app) => {
             }
             servicioAccion.crearAccion(req,res,"crear, fallida Error: "+ error.code, "nodo", req.user)
             .then((resp)=>{})
-            res.redirect('/grafo')
+            res.redirect('/grafo/crear/nodo')
         })
     })
 
     app.post('/asociacion', (req, res, next)  => {
-        esperaPromesaDeCrearAsociacion(req,res)
+        ejecutaPromesaDeCrearAsociacion(req,res)
     });
 
 
-    async function esperaPromesaDeCrearAsociacion(req,res){
+    async function ejecutaPromesaDeCrearAsociacion(req,res){
         respuesta = await servicioAsociacion.crearAsociacion(req,res)
         res.redirect("/grafo/crear/asociacion")
     }
+
+    app.post('/grafo/eliminar/nodo', (req, res, next)  => {
+        if (req.isAuthenticated()){
+            ejecutaPromesaDeEliminarNodo(req,res)
+        }
+    })
+
+    async function ejecutaPromesaDeEliminarNodo(req,res){
+        respuesta = await servicioNodo.eliminarNodo(req,res)
+        //req.flash('nodoMessage', 'se elimino el nodo')
+        res.redirect("/grafo/nodo")
+    }
+
+    app.post('/grafo/eliminar/asociacion', (req, res, next)  => {
+        if (req.isAuthenticated()){
+            ejecutaPromesaDeEliminarAsociacion(req,res)
+        }
+    })
+
+    async function ejecutaPromesaDeEliminarAsociacion(req,res){
+        respuesta = await servicioAsociacion.eliminarAsociacion(req,res)
+        req.flash('asociacionMessage', 'se elimino la asociacion')
+        res.redirect("/grafo/asociacion")
+    }
+
+    app.get('/grafo/editar/asociacion', (req, res, next)  => {
+        if (req.isAuthenticated()){
+            servicioAsociacion.pedirTabla(req, res)
+            .then((tablaAsociacion) => {
+                    res.render('viewGrafoEditarAsociacion',{
+                      logged: true,
+                      user: req.user,
+                      message: req.flash('asociacionMessage'),
+                      asociaciones: tablaAsociacion
+                    })
+
+            })
+        }
+    })
+
+    app.post('/grafo/editar/asociacion', (req, res, next)  => {
+        if (req.isAuthenticated()){
+            ejecutaPromesaDeEditarAsociacion(req,res)
+        }
+    })
+
+    async function ejecutaPromesaDeEditarAsociacion(req,res){
+        respuesta = await servicioAsociacion.editaAsociacion(req,res)
+        req.flash('asociacionMessage', 'se edito la asociacion correctamente')
+        res.redirect("/grafo/asociacion")
+    }
+
+
 
   }
