@@ -8,8 +8,10 @@
                 <th>latitud</th>
                 <th>longitud</th>
                 <th>tipo de nodo</th>
+				<% if (user.supervisor == false) { %>
                 <th>editar</th>
                 <th>eliminar</th>
+				<% } %>
             </tr>
         </thead>
         <tbody>
@@ -20,19 +22,22 @@
                     <th ><%= nodos[i].latitud %></th>
                     <th ><%= nodos[i].longitud %></th>
                     <th ><%= nodos[i].tipo_nodo %></th>
-                    <th class="ajustar" >
+					<% if (user.supervisor == false) { %>
+                    	<th>
 						<form class="" action="/nodos/editar" method="get">
 							<input type="" class="invisible esconde" name="nodoNombre" id="nodoNombre"
 		                          value="<%= nodos[i].nombre %>">
 							<input type="submit" value= "editar" class=" btn btn-success">
 							</form>
-					</th>
-                    <th class="ajustar"><form class="" action="/nodos/eliminar" method="post">
-						<input type="" class="invisible esconde" name="nodoNombre" id="nodoNombre"
+						</th>
+                    	<th>
+						<form class="" action="/nodos/eliminar" method="post">
+							<input type="" class="invisible esconde" name="nodoNombre" id="nodoNombre"
 	                          value="<%= nodos[i].nombre %>">
-						<input type="submit" value= "eliminar" class=" btn btn-danger">
-						</form>
-					</th>
+							  <input type="submit" value= "eliminar" class=" btn btn-danger">
+							</form>
+						</th>
+					<% } %>
                 </tr>
             <% } %>
 		</tbody>

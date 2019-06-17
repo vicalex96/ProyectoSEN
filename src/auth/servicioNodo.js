@@ -61,6 +61,7 @@ async function actualizar(req,res){
 async function eliminar(req,res) {
     respuesta = await dao.eliminar(req,res)
     //TODO agregar la entrada a la bitacora
+    //TODO actualizar las asociaciones
     return respuesta
    }
 

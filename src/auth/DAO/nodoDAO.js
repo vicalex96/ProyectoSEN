@@ -66,11 +66,11 @@ function actualizar(req,res){
             tipo_nodo: req.body.tipoNodo
          })
         .then(()=>{
-            console.log('hola')
+            
             resolve(true)
         })
         .catch((error)=>{
-            console.log(error.code)
+
             reject(error)
         })
 

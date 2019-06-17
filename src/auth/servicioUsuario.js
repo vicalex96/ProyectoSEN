@@ -1,56 +1,48 @@
-const bcrypt = require('bcrypt');
 const knex = require('../db/connection')
+const dao = require('./DAO/usuarioDAO');
+const bcrypt = require('bcrypt');
 
 function comparePass(userPassword, databasePassword) {
   return bcrypt.compareSync(userPassword, databasePassword);
 }
 
-function createUser(req, res) {
-    if(req.body.userType == 'Supervisor'){
-        userType = true;
-    }else{
-        userType = false;
-    }
-    const salt = bcrypt.genSaltSync();
-    const hash = bcrypt.hashSync(req.body.password, salt)
-    return knex('usuario')
-    .insert({
-      nombre_usuario: req.body.userName,
-      contrasena: hash,
-      nombre: req.body.name,
-      apellido:req.body.lastname,
-      supervisor: userType
-    })
-    .then((res) => {
-        if (res) {
-            req.flash('registerMessage','usuario creado')
-        }
-        return next();
-    })
-    .catch(function(error) {
-        if(error.code == 23505){
-            req.flash('registerMessage','usuario duplicado')
-        }else if( error.code != null){
-            req.flash('registerMessage','ocurrio un error')
-        }
-        return next();
-    });
+async function crear(req, res) {
+    respuesta = await dao.crear(req,res)
+    //TODO agregar la entrada a la bitacora
+    return respuesta
+}
+
+async function cargarTabla(){
+    respuesta = await dao.cargar()
+    //TODO agregar la entrada a la bitacora
+    return respuesta
+}
+
+async function actualizar(){
+    respuesta = await dao.actualizar(req,res).catch((error)=>{console.log(error.code)})
+    //TODO agregar la entrada a la bitacora
+    return respuesta
 }
 
   function loginRequired(req, res, next) {
-    if (!req.user) return res.status(401).json({status: 'Porfavor inicia sesion'});
+    if (!req.user){
+        return req.flash("loginMessage","No hay ninguna sesion abierta")
+    }
     return next();
   }
 
   function adminRequired(req, res, next) {
-    if (!req.user) res.status(401).json({status: 'Porfavor inicia sesion'});
+    if (!req.user){
+        req.flash("loginMessage","No hay ninguna sesion abierta")
+    }
     return knex('users').where({username: req.user.username}).first()
     .then((user) => {
-      if (!user.supervisor) res.status(401).json({status: 'No estas autorizado para esto'});
-      return next();
+        if (!user.supervisor) {
+            req.flash("loginMessage","No hay autorizacion para entrar en esa seccion")
+        }
     })
     .catch((err) => {
-      res.status(500).json({status: 'Algo malo sucedio'});
+      req.flash("loginMessage","Error: ocurrio un problema y no se pudo proseguir")
     });
   }
 
@@ -60,37 +52,14 @@ function createUser(req, res) {
     return next();
   }
 
-  function handleErrors(req) {
-    return new Promise( function(resolve, reject){
-      if (req.body.userName.length < 6) {
-        reject({
-          message: 'El nombre tiene que tener almenos 6 caracteres'
-        });
-      }
-      if (req.body.userName.length > 12) {
-          reject({
-            message: 'El nombre de usuario es muy largo, maximo 12 caracteres'
-          });
-      }
-      if (req.body.password.length < 8) {
-        reject({
-          message: 'La contraseña tiene que tener minimo 8 caracteres'
-        });
-      } else {
-        resolve();
-      }
-    })
-  }
 
-  function pedirTabla(){
-      return knex.select().table('usuario')
-  }
 
   module.exports = {
     comparePass,
-    createUser,
+    crear,
+    actualizar,
     loginRequired,
     adminRequired,
     loginRedirect,
-    pedirTabla
+    cargarTabla
   };

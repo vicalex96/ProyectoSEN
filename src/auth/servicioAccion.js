@@ -1,22 +1,18 @@
 const knex = require('../db/connection')
+const dao = require('./DAO/accionDAO');
 
-function crearAccion(req, res, tipoDeAccion, objeto, operador) {
-    return knex('accion').insert({
-            tipo_accion: tipoDeAccion,
-            objeto_afectado: objeto,
-            nombre_operador: operador.nombre,
-            id_operador: operador.id
-        })
+async function crear(req, res, tipoDeAccion, objeto, operador) {
+    respuesta = await dao.crear(req,res)
+    //TODO agregar la entrada a la bitacora
+    return respuesta
     }
 
-
-
-function pedirTabla(req, res){
-    return knex.select().table('accion')
+async function cargarTabla(req, res){
+    respuesta = await dao.cargarTabla(req,res)
+    return respuesta
 }
 
-
   module.exports = {
-    crearAccion,
-    pedirTabla
+    crear,
+    cargarTabla
   };
