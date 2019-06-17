@@ -1,107 +1,71 @@
 const knex = require('../db/connection')
 const servicioAccion = require('../auth/servicioAccion');
+const dao  = require('../auth/DAO/AsociacionDAO');
 
-async function crearAsociacion(req, res) {
-    campo = req.body
-    nodo1 = campo.primerNodo.split("-")
-    nodo2 = campo.segundoNodo.split("-")
-    compatible = true;
+async function crear(req, res) {
+    req.body.primerNodo = req.body.primerNodo.split("-")
+    req.body.segundoNodo = req.body.segundoNodo.split("-")
+    nodo1 = req.body.primerNodo
+    nodo2 = req.body.segundoNodo
+
+    compatible = false;
     if(nodo1[2] === "Generacion" && nodo2[2] === "Termoelectrica"){
-        compatible = await comprobarCompatibilidad(req,res,nodo2[1],nodo2[2])
+        compatible = await dao.comprobarCompatibilidad(req,res)
     }
 
-    if(compatible && (
-        nodo1[2] === "Generacion" && nodo2[2] === "Termoelectrica"||
-        nodo1[2] === "Generacion" && nodo2[2] ==="Distribucion" ||
-        nodo1[2] === "Termoelectrica" && nodo2[2]  ==="Distribucion" ||
-        nodo1[2] === "Distribucion"   && nodo2[2] ==="Distribucion"
-    )&& nodo1[2] != nodo2){
-        respuesta = await crearAsociacionDAO(req,res,nodo1,nodo2,campo)
+    if(compatible || ( nodo1[2] === "Generacion" && nodo2[2] === "Distribucion"
+    || nodo1[2] === "Termoelectrica" && nodo2[2] === "Distribucion"
+    || nodo1[2] === "Distribucion" && nodo2[2] === "Distribucion"   )
+    && nodo1[2] != nodo2[2] ) {
+        respuesta = await dao.crear(req,res)
+
         if(respuesta){
             req.flash('asociacionMessage','Asociacion creada')
+
         }else {
-            req.flash('asociacionMessage','No se pudo crear el nodo')
+            req.flash('asociacionMessage',' no se pudo crear la asociacion')
         }
-        return respuesta
     }else{
-        req.flash('asociacionMessage','Nodos no compatibles')
+        req.flash('asociacionMessage','la relacion'+nodo1[2] +' -> '+ nodo2[2] +' no es compatible')
     }
-
+    //TODO agregar la entrada a la bitacora
 }
 
-function crearAsociacionDAO(req,res,nodo1,nodo2,campo){
-    return new Promise(function(resolve,reject){
-        resolve(true)
-        knex('asociacion').insert({
-            nombre_nodo1:nodo1[1],
-            tipo_nodo1:nodo1[2],
-            nombre_nodo2:nodo2[1],
-            tipo_nodo2:nodo2[2],
-            capacidad:campo.capacidad
-        })
-        .then((asociacion)=>{
-            servicioAccion.crearAccion(req,res,"crear", "asociacion " + nodo1[1] + " "+ nodo2[1], req.user)
-            .then((resp)=>{})
-            resolve(true)
-        })
-        .catch((error)=>{
-            if(error.code == 23505){
-                req.flash('asociacionMessage','asociacion duplicado')
-            }else if( error.code != null){
-                req.flash('asociacionMessage','ocurrio un error')
-            }
-            reject()
-        })
-    })
- }
-
-function comprobarCompatibilidad(req, res, nombreNodo,tipoDeNodo) {
-   return new Promise(function(resolve,reject){
-       knex('asociacion').where({ nombre_nodo1: nombreNodo}).first()
-       .then((asociacion)=>{
-           if(!asociacion){
-               req.flash('asociacionMessage','Error: no se pudo comprobar la compatibilidad')
-               resolve(false)
-           }else if(asociacion.tipo_nodo2 == "Distribucion"){
-               resolve(true)
-           }else{
-               resolve(false)
-           }
-       })
-   })
+ async function cargarTabla(req, res){
+    respuesta = await dao.cargar(req,res)
+    //TODO agregar la entrada a la bitacora
+    return respuesta
 }
 
-function pedirTabla(req, res){
-    return knex.select().table('asociacion')
+async function cargarAsociacion(req,res){
+    respuesta = await dao.cargarAsociacion(req,res)
+    //TODO agregar la entrada a la bitacora
+    return respuesta
 }
 
-function eliminarAsociacion(req, res) {
-   return new Promise(function(resolve,reject){
-       knex('asociacion').where({ id: req.body.asociacionid}).first().del()
-       .then(()=>{
-           servicioAccion.crearAccion(req,res,"Eliminar", "asociacion de id : " + req.body.asociacionid, req.user)
-          .then((resp)=>{})
-           resolve(true)
-       })
-   })
+async function editar(req, res){
+    respuesta = await dao.actualizar(req,res)
+    //TODO agregar la entrada a la bitacora
+    return respuesta
 }
 
-
-function editaAsociacion(req, res) {
-   return new Promise(function(resolve,reject){
-       knex('asociacion').where({ id: req.body.asociacionid}).update({ capacidad: req.body.capacidad})
-       .then(()=>{
-           servicioAccion.crearAccion(req,res,"editar", "asociacion de id : " + req.body.asociacionid, req.user)
-          .then((resp)=>{})
-           resolve(true)
-       })
-   })
+async function actualizar(req,res){
+    respuesta = await dao.actualizar(req,res).catch((error)=>{console.log(error.code)})
+    //TODO agregar la entrada a la bitacora
+    //TODO actualizar las asociaciones
+    return respuesta
 }
 
+async function eliminar(req, res){
+    respuesta = await dao.eliminar(req,res)
+    //TODO agregar la entrada a la bitacora
+    return respuesta
+}
 
   module.exports = {
-    crearAsociacion,
-    pedirTabla,
-    eliminarAsociacion,
-    editaAsociacion
+    cargarTabla,
+    cargarAsociacion,
+    crear,
+    actualizar,
+    eliminar
   };

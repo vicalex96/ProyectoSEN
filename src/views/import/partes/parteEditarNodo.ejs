@@ -1,15 +1,18 @@
 <div class=" container modal-dialog col-md-6 mb-3">
     <div class="color modal-content text-center">
-        <form class=" needs-validation" action="/nodos/crear" method="post" novalidate>
+        <form class=" needs-validation" action="/nodos/actualizar" method="post" novalidate>
             <br>
-            <h4 class= " text-center"> Registrar un nodo </h4>
-            <h6 class= " text-center"> campos obligatorios* </h6>
+            <h4 class= " text-center"> Editar un nodo </h4>
+            <h6 class= " text-center"> Atencion al editar el tipo de central se 
+                perderan las asociaciones de este nodo </h6>
 
             <% if (message.length > 0) { %>
               <div class="alert alert-danger">
                 <%= message %>
               </div>
             <% } %>
+            <input type="text" class="invisible esconde" name="id" id="id"
+                  value="<%= nodo.id %>">
 
             <div class="col-md-12 mb-3">
             <div class="input-group">
@@ -18,10 +21,10 @@
             </div>
             <input type="text" class="form-control" name="nombreNodo" id="nodeName"
                    minlength="4" maxlength="50" placeholder="nombre de nodo*"
-                   aria-describedby="inputGroupPrepend" required>
+                   aria-describedby="inputGroupPrepend" value="<%=nodo.nombre %>" required>
             <div class="invalid-feedback">
                 campo no puede estar vacio
-                numero de caracteres entre 4 y 50
+                minimo 4 caracteres
             </div>
             </div>
             </div>
@@ -29,7 +32,7 @@
             <div class=" col-md-6 mb-3">
             <div class=" form-group">
                 <select name="tipoNodo" class="custom-select browser-default" required>
-                <option value="">tipo de nodo*</option>
+                    <option value="<%=nodo.tipo_nodo %>"> - Central <%=nodo.tipo_nodo %> </option>
                     <option value="Generacion">Central de Generación</option>
                     <option value="Termoelectrica">Central Termoeléctrica</option>
                     <option value="Distribucion">Centro de Distribución</option>
@@ -44,7 +47,7 @@
                 <div class="col-md-2 mb-1">
                 <div class="form-group">
                     <select name="latitud_grados" class="custom-select browser-default" required>
-                    <option value="">°</option>
+                    <option value="<%=nodo.latitud.grados %>"><%=nodo.latitud.grados %></option>
                     <% for(i=0; i<=12; i++){ %>
                         <option value="<%=i%>"><%= i %></option>
                     <% } %>
@@ -56,7 +59,7 @@
                 <div class="col-md-2 mb-1">
                 <div class="form-group">
                     <select name="latitud_minutos" class="custom-select browser-default" required>
-                    <option value="">'</option>
+                    <option value="<%=nodo.latitud.minutos %>"><%=nodo.latitud.minutos %></option>
                     <% for(i=0; i<=60; i++){ %>
                         <option value="<%=i%>"><%= i %></option>
                     <% } %>
@@ -68,7 +71,7 @@
                 <div class="col-md-2 mb-1">
                 <div class="form-group">
                     <select name="latitud_segundos" class="custom-select browser-default" required>
-                    <option value="">"</option>
+                    <option value="<%=nodo.latitud.segundos %>"><%=nodo.latitud.segundos %></option>
                     <% for(i=0; i<=60; i++){ %>
                         <option value="<%=i%>"><%= i %></option>
                     <% } %>
@@ -85,7 +88,7 @@
                 <div class="col-md-2 mb-3">
                 <div class="form-group">
                     <select name="longitud_grados" class="custom-select browser-default" required>
-                    <option value="">°</option>
+                    <option value="<%=nodo.longitud.grados %>"><%=nodo.longitud.grados %></option>
                     <% for(i=-73; i<=-59; i++){ %>
                         <option value="<%=i%>"><%= i %></option>
                     <% } %>
@@ -97,7 +100,7 @@
                 <div class="col-md-2 mb-3">
                 <div class="form-group">
                     <select name="longitud_minutos" class="custom-select browser-default" required>
-                    <option value="">'</option>
+                    <option value="<%=nodo.longitud.minutos %>"><%=nodo.longitud.minutos %></option>
                     <% for(i=0; i<=60; i++){ %>
                         <option value="<%=i%>"><%= i %></option>
                     <% } %>
@@ -109,7 +112,7 @@
                 <div class="col-md-2 mb-3">
                 <div class="form-group">
                     <select name="longitud_segundos" class="custom-select browser-default" required>
-                    <option value="">"</option>
+                    <option value="<%=nodo.longitud.segundos %>"><%=nodo.longitud.segundos %></option>
                     <% for(i=0; i<=60; i++){ %>
                         <option value="<%=i%>"><%= i %></option>
                     <% } %>
@@ -117,11 +120,9 @@
                     <div class="invalid-feedback">Seleciona una opcion</div>
                 </div>
                 </div>
-
-
             </div>
 
-            <button class="btn btn-success btn-sm mb-4" type="submit"> Crear </button>
+            <button class="btn btn-success btn-sm mb-4" type="submit"> Actualizar </button>
           </form>
     </div>
 </div>

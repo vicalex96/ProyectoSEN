@@ -8,7 +8,7 @@
                 <th>latitud</th>
                 <th>longitud</th>
                 <th>tipo de nodo</th>
-
+                <th>editar</th>
                 <th>eliminar</th>
             </tr>
         </thead>
@@ -20,8 +20,14 @@
                     <th ><%= nodos[i].latitud %></th>
                     <th ><%= nodos[i].longitud %></th>
                     <th ><%= nodos[i].tipo_nodo %></th>
-
-                    <th class="ajustar"><form class="" action="/grafo/eliminar/nodo" method="post">
+                    <th class="ajustar" >
+						<form class="" action="/nodos/editar" method="get">
+							<input type="" class="invisible esconde" name="nodoNombre" id="nodoNombre"
+		                          value="<%= nodos[i].nombre %>">
+							<input type="submit" value= "editar" class=" btn btn-success">
+							</form>
+					</th>
+                    <th class="ajustar"><form class="" action="/nodos/eliminar" method="post">
 						<input type="" class="invisible esconde" name="nodoNombre" id="nodoNombre"
 	                          value="<%= nodos[i].nombre %>">
 						<input type="submit" value= "eliminar" class=" btn btn-danger">

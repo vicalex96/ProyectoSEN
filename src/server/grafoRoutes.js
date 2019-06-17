@@ -1,220 +1,134 @@
 
 const rout = require("path")
-const authHelpers = require('../auth/_helpers');
+const servicioUsuario = require('../auth/servicioUsuario');
 const servicioNodo = require('../auth/servicioNodo');
 const servicioAsociacion = require('../auth/servicioAsociacion');
 const servicioAccion = require('../auth/servicioAccion');
-const passport = require('../auth/local');
+const passport = require('../auth/servicioSesion');
 const fs = require('fs')
 
 module.exports = (app) => {
 
-
-
-    app.get('/grafo/crear/nodo', function (req, res) {
-      if (req.isAuthenticated() && !req.user.superviso) {
-          servicioNodo.pedirTabla(req, res)
-          .then((tablaNodo) => {
-              res.render('viewGrafoCrearNodo',{
-                  logged: true,
-                  user: req.user,
-                  message1: req.flash('nodoMessage'),
-                  messageAction: req.flash('accionMessage'),
-                  nodos: tablaNodo,
-                 })
-             })
-             .catch((error) => {
-
-             })
-      }else{
-        res.redirect('/home')
-      }
-    })
-
-    app.get('/grafo/crear/asociacion', function (req, res) {
-      if (req.isAuthenticated() && !req.user.superviso) {
-          servicioNodo.pedirTabla(req, res)
-          .then((tablaNodo) => {
-              servicioAsociacion.pedirTabla(req, res)
-              .then((tablaAsociacion) => {
-                  res.render('viewGrafoCrearAsociacion',{
-                      logged: true,
-                      user: req.user,
-                      message2: req.flash('asociacionMessage'),
-                      messageAction: req.flash('accionMessage'),
-                      nodos: tablaNodo,
-                      Asociaciones: tablaAsociacion
-                  })
-              })
-              .catch((error) => {
-
-              });
-          })
-          .catch((error) => {
-
-          });
-      }else{
-        res.redirect('/home')
-      }
-    })
-
-    app.get('/grafo/nodo', function (req, res) {
+    app.get('/nodos', async (req, res) =>{
         if (req.isAuthenticated()) {
-            servicioNodo.pedirTabla(req, res)
-            .then((tablaNodo) => {
+            tablaNodo = await servicioNodo.cargarTabla(req, res)
+            if(tablaNodo){
                 res.render('viewGrafoNodo',{
                     logged: true,
                     user: req.user,
                     nodos: tablaNodo
                 })
-            })
-            .catch((error) => {
-
-            });
+            }
         }else{
           res.redirect('/home')
         }
     })
 
-    app.get('/grafo/asociacion', function (req, res) {
+    app.get('/nodos/crear', function (req, res) {
+      if (req.isAuthenticated() && !req.user.superviso) {
+          res.render('viewGrafoCrearNodo',{
+              logged: true,
+              user: req.user,
+              message: req.flash('nodoMessage'),
+          })
+      }else{
+        res.redirect('/home')
+      }
+    })
+
+    app.post('/nodos/crear', async (req, res) => {
+        respuesta =  await servicioNodo.crear(req,res)
+        res.redirect('/nodos/crear')
+    })
+
+    //TODO: terminar la edicion de los nodos
+    app.get('/nodos/editar', async (req, res)  => {
+      if (req.isAuthenticated() && !req.user.superviso) {
+          nodo = await servicioNodo.cargarNodo(req,res)
+          nodo = servicioNodo.separarCoordenadas(nodo)
+          res.render('viewGrafoEditarNodo',{
+              logged: true,
+              user: req.user,
+              nodo: nodo,
+              message: req.flash('nodoMessage'),
+          })
+      }else{
+        res.redirect('/home')
+      }
+    })
+
+    app.post('/nodos/actualizar', async (req, res) => {
+        respuesta = await servicioNodo.actualizar(req,res).catch(()=>{console.log("error")})
+        res.redirect('/nodos')
+
+    })
+
+    app.post('/nodos/eliminar', async (req, res) => {
+        respuesta = await servicioNodo.eliminar(req,res)
+        res.redirect('/nodos')
+    })
+
+    app.get('/asociaciones', async (req, res) => {
         if (req.isAuthenticated()) {
-            servicioAsociacion.pedirTabla(req,res)
-            .then((tablaAsociacion) => {
+            tablaAsociacion = await servicioAsociacion.cargarTabla(req,res)
+            if(tablaAsociacion){
                 res.render('viewGrafoAsociacion',{
                     logged: true,
                     user: req.user,
                     asociaciones: tablaAsociacion
                 })
-            })
-            .catch((error) => {
-
-            });
-
+            }
         }else{
             res.redirect('/home')
         }
     })
 
+    app.get('/asociaciones/crear', async (req, res) =>{
+        if (req.isAuthenticated() && !req.user.superviso) {
+            tablaNodo = await servicioNodo.cargarTabla(req, res)
+            if(tablaNodo){
+                res.render('viewGrafoCrearAsociacion',{
+                    logged: true,
+                    user: req.user,
+                    message2: req.flash('asociacionMessage'),
+                    messageAction: req.flash('accionMessage'),
+                    nodos: tablaNodo,
+                })
+            }else{
+                res.redirect('/home')
+            }
+        }
+    })
 
-    app.get('/grafo', function (req, res) {
-      if (req.isAuthenticated()) {
-          servicioNodo.pedirTabla(req, res)
-          .then((tablaNodo) => {
-              servicioAsociacion.pedirTabla(req, res)
-              .then((tablaAsociacion) => {
-                  if(req.user.supervisor){
-                      res.render('viewGrafo',{
-                        logged: true,
-                        user: req.user,
-                        nodos: tablaNodo,
-                        asociaciones: tablaAsociacion
-                      })
-                  }else{
-                      res.render('viewGrafo',{
-                        logged: true,
-                        user: req.user,
-                        message1: req.flash('nodoMessage'),
-                        message2: req.flash('asociacionMessage'),
-                        messageAction: req.flash('accionMessage'),
-                        nodos: tablaNodo,
-                        asociaciones: tablaAsociacion
-                      })
-                  }
-              })
-              .catch((error) => {
+    app.post('/asociaciones/crear', async (req, res) => {
+        respuesta =  await servicioAsociacion.crear(req,res)
 
-              });
+        res.redirect('/asociaciones/crear')
+    })
+
+    app.get('/asociaciones/editar', async (req, res)  => {
+      if (req.isAuthenticated() && !req.user.superviso) {
+          console.log(req.body)
+          asociacion = await servicioAsociacion.cargarAsociacion(req,res)
+          res.render('viewGrafoEditarAsociacion',{
+              logged: true,
+              user: req.user,
+              asociacion: asociacion,
+              message: req.flash('asociacionMessage'),
           })
-          .catch((error) => {
-
-          });
       }else{
         res.redirect('/home')
-          }
+      }
     })
 
-    app.post('/nodo', (req, res, next)  => {
-         servicioNodo.crearNodo(req, res)
-        .then((respuesta)=>{
-            req.flash('nodoMessage','Nodo creado')
-            servicioAccion.crearAccion(req,res,"crear", "nodo", req.user)
-            .then((resp)=>{})
-            res.redirect('/grafo/crear/nodo')
-
-        })
-        .catch((error) => {
-            if(error.code == 23505){
-                req.flash('nodoMessage','nodo duplicado')
-            }else if( error.code != null){
-                req.flash('nodoMessage','ocurrio un error')
-            }
-            servicioAccion.crearAccion(req,res,"crear, fallida Error: "+ error.code, "nodo", req.user)
-            .then((resp)=>{})
-            res.redirect('/grafo/crear/nodo')
-        })
+    app.post('/asociaciones/actualizar', async (req, res) => {
+        respuesta = await servicioAsociacion.actualizar(req,res)
+        res.redirect('/asociaciones')
     })
 
-    app.post('/asociacion', (req, res, next)  => {
-        ejecutaPromesaDeCrearAsociacion(req,res)
-    });
-
-
-    async function ejecutaPromesaDeCrearAsociacion(req,res){
-        respuesta = await servicioAsociacion.crearAsociacion(req,res)
-        res.redirect("/grafo/crear/asociacion")
-    }
-
-    app.post('/grafo/eliminar/nodo', (req, res, next)  => {
-        if (req.isAuthenticated()){
-            ejecutaPromesaDeEliminarNodo(req,res)
-        }
+    app.post('/asociaciones/eliminar', async (req, res) => {
+        respuesta =  await servicioAsociacion.eliminar(req,res)
+        res.redirect('/asociaciones')
     })
-
-    async function ejecutaPromesaDeEliminarNodo(req,res){
-        respuesta = await servicioNodo.eliminarNodo(req,res)
-        //req.flash('nodoMessage', 'se elimino el nodo')
-        res.redirect("/grafo/nodo")
-    }
-
-    app.post('/grafo/eliminar/asociacion', (req, res, next)  => {
-        if (req.isAuthenticated()){
-            ejecutaPromesaDeEliminarAsociacion(req,res)
-        }
-    })
-
-    async function ejecutaPromesaDeEliminarAsociacion(req,res){
-        respuesta = await servicioAsociacion.eliminarAsociacion(req,res)
-        req.flash('asociacionMessage', 'se elimino la asociacion')
-        res.redirect("/grafo/asociacion")
-    }
-
-    app.get('/grafo/editar/asociacion', (req, res, next)  => {
-        if (req.isAuthenticated()){
-            servicioAsociacion.pedirTabla(req, res)
-            .then((tablaAsociacion) => {
-                    res.render('viewGrafoEditarAsociacion',{
-                      logged: true,
-                      user: req.user,
-                      message: req.flash('asociacionMessage'),
-                      asociaciones: tablaAsociacion
-                    })
-
-            })
-        }
-    })
-
-    app.post('/grafo/editar/asociacion', (req, res, next)  => {
-        if (req.isAuthenticated()){
-            ejecutaPromesaDeEditarAsociacion(req,res)
-        }
-    })
-
-    async function ejecutaPromesaDeEditarAsociacion(req,res){
-        respuesta = await servicioAsociacion.editaAsociacion(req,res)
-        req.flash('asociacionMessage', 'se edito la asociacion correctamente')
-        res.redirect("/grafo/asociacion")
-    }
-
-
 
   }

@@ -1,10 +1,10 @@
 
 const rout = require("path")
-const authHelpers = require('../auth/_helpers');
+const servicioUsuario = require('../auth/servicioUsuario');
 const servicioNodo = require('../auth/servicioNodo');
 const servicioAsociacion = require('../auth/servicioAsociacion');
 const servicioAccion = require('../auth/servicioAccion');
-const passport = require('../auth/local');
+const passport = require('../auth/servicioSesion');
 const fs = require('fs')
 
 module.exports = (app) => {
@@ -39,7 +39,7 @@ module.exports = (app) => {
       }
     })
 
-    app.post('/login', authHelpers.loginRedirect, (req, res, next) => {
+    app.post('/login', servicioUsuario.loginRedirect, (req, res, next) => {
       passport.authenticate('local', {
     		successRedirect: '/perfil',
     		failureRedirect: '/login',
@@ -72,14 +72,14 @@ module.exports = (app) => {
     })
 
   app.post('/register', (req, res, next)  => {
-      return authHelpers.createUser(req, res)
+      return servicioUsuario.createUser(req, res)
       .catch((err) => {
           res.redirect('/register')
       });
       res.redirect('/register')
   });
 
-app.get('/logout', authHelpers.loginRequired, (req, res, next) => {
+app.get('/logout', servicioUsuario.loginRequired, (req, res, next) => {
       req.logout();
       handleResponse(res, 200, res.redirect('/login'));
 
@@ -88,7 +88,7 @@ app.get('/logout', authHelpers.loginRequired, (req, res, next) => {
 app.get('/userAdministration', function (req, res) {
       if (req.isAuthenticated() && req.user.supervisor) {
 
-        authHelpers.pedirTabla(req, res)
+        servicioUsuario.pedirTabla(req, res)
         .then((tablaUsuarios) => {
             res.render('viewUserAdministration',{
                 logged: true,
