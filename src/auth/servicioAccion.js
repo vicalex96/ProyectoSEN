@@ -1,9 +1,18 @@
 const knex = require('../db/connection')
 const dao = require('./DAO/accionDAO');
+const servicioAccion = require('./servicioAccion');
 
-async function crear(req, res, tipoDeAccion, objeto, operador) {
-    respuesta = await dao.crear(req,res)
-    //TODO agregar la entrada a la bitacora
+async function crearAccion(req, res, tipoDeAccion, objeto, operador) {
+    var respuesta
+    await dao.crear(req,res, tipoDeAccion, objeto, operador)
+    .then(()=>{
+        console.log("salimos")
+        repuesta =true
+    })
+    .catch((error)=>{
+        console.log("error: " + error.code)
+        respuesta = false
+    })
     return respuesta
     }
 
@@ -13,6 +22,6 @@ async function cargarTabla(req, res){
 }
 
   module.exports = {
-    crear,
-    cargarTabla
+    crearAccion,
+    cargarTabla,
   };

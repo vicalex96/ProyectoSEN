@@ -1,8 +1,9 @@
 const knex = require('../db/connection')
-const servicioAccion = require('../auth/servicioAccion');
+const servicioAccion = require('./servicioAccion');
 const dao  = require('../auth/DAO/AsociacionDAO');
 
 async function crear(req, res) {
+    var respuesta
     req.body.primerNodo = req.body.primerNodo.split("-")
     req.body.segundoNodo = req.body.segundoNodo.split("-")
     nodo1 = req.body.primerNodo
@@ -17,48 +18,90 @@ async function crear(req, res) {
     || nodo1[2] === "Termoelectrica" && nodo2[2] === "Distribucion"
     || nodo1[2] === "Distribucion" && nodo2[2] === "Distribucion"   )
     && nodo1[2] != nodo2[2] ) {
-        respuesta = await dao.crear(req,res)
 
-        if(respuesta){
-            req.flash('asociacionMessage','Asociacion creada')
+        respuesta = ejecutaCreacionAsociacion(req,res)
 
-        }else {
-            req.flash('asociacionMessage',' no se pudo crear la asociacion')
-        }
     }else{
-        req.flash('asociacionMessage','la relacion'+nodo1[2] +' -> '+ nodo2[2] +' no es compatible')
+        req.flash('asociacionMessage','la relacion '+nodo1[2] +' -> '+ nodo2[2] +' no es compatible')
+
     }
-    //TODO agregar la entrada a la bitacora
+
+    return respuesta
 }
 
- async function cargarTabla(req, res){
-    respuesta = await dao.cargar(req,res)
-    //TODO agregar la entrada a la bitacora
+async function ejecutaCreacionAsociacion(req,res){
+    var respuesta
+    await dao.comprobarExistencia(req,res)
+    .then(async (exitencia)=>{
+
+        if(exitencia){
+            req.flash('asociacionMessage','Error: ambos nodos ya estan asociados')
+            respuesta = false
+        }else{
+            await dao.crear(req,res)
+            .then((resp)=>{
+                req.flash('asociacionMessage','Asociacion creada')
+                servicioAccion.crearAccion(req,res,"crear asociacion",
+                               "asociacion: " + req.body.nombreAsociacion, req.user)
+                respuesta = true
+            })
+            .catch((error)=>{
+                req.flash('asociacionMessage',' no se pudo crear la asociacion')
+                servicioAccion.crearAccion(req,res,"crear asociacion",
+                                "Fallida, error: " + error.code, req.user)
+                respuesta = false
+            })
+        }
+    })
+    .catch((error)=>{
+        req.flash('asociacionMessage','Error: no se pudo crear la asociacion')
+        respuesta = false
+    })
+    return respuesta
+}
+
+async function cargarTabla(req, res){
+    respuesta = await dao.cargarTabla(req,res)
     return respuesta
 }
 
 async function cargarAsociacion(req,res){
     respuesta = await dao.cargarAsociacion(req,res)
-    //TODO agregar la entrada a la bitacora
-    return respuesta
-}
-
-async function editar(req, res){
-    respuesta = await dao.actualizar(req,res)
-    //TODO agregar la entrada a la bitacora
     return respuesta
 }
 
 async function actualizar(req,res){
-    respuesta = await dao.actualizar(req,res).catch((error)=>{console.log(error.code)})
-    //TODO agregar la entrada a la bitacora
-    //TODO actualizar las asociaciones
+    var respuesta
+    await dao.actualizar(req,res)
+    .then(()=>{
+        servicioAccion.crearAccion(req,res,"actualizar asociacion",
+                       "asociacion: " + req.body.nombreAsociacion, req.user)
+        respuesta = true
+    })
+    .catch((error)=>{
+        req.flash('listaAsociacionMessage','Error: no se pudo actualizar la asociacion')
+        servicioAccion.crearAccion(req,res,"actualizar asociacion",
+                        "Fallida, error: " + error.code, req.user)
+        respuesta = false
+    })
     return respuesta
 }
 
 async function eliminar(req, res){
-    respuesta = await dao.eliminar(req,res)
-    //TODO agregar la entrada a la bitacora
+    var respuesta
+    await dao.eliminar(req,res)
+    .then(()=>{
+        servicioAccion.crearAccion(req,res,"eliminar asociacion",
+                       "asociacion: " + req.body.nombreAsociacion, req.user)
+        respuesta = true
+    })
+    .catch((error)=>{
+        req.flash('listaAsociacionMessage','Error: no se logro eliminar la asociacion')
+        servicioAccion.crearAccion(req,res,"eliminar asociacion",
+                        "Fallida, error: " + error.code, req.user)
+        respuesta = false
+    })
+
     return respuesta
 }
 

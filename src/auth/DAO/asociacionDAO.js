@@ -6,28 +6,21 @@ async function crear(req,res){
     nodo1 = req.body.primerNodo
     nodo2 = req.body.segundoNodo
 
-    if( !(await comprobarExistencia(req,res)) ){
-        return new Promise(function(resolve,reject){
-            knex('asociacion').insert({
-                nombre_nodo1: nodo1[1],
-                tipo_nodo1:nodo1[2],
-                nombre_nodo2:nodo2[1],
-                tipo_nodo2:nodo2[2],
-                capacidad:req.body.capacidad
-            })
-            .then((asociacion)=>{
-                servicioAccion.crearAccion( req,res,"crear", "asociacion " +
-                    nodo1[1] + " "+ nodo2[1], req.user )
-                .then((resp)=>{})
-                resolve(true)
-            })
-            .catch((error)=>{
-                reject()
-            })
+    return new Promise(function(resolve,reject){
+        knex('asociacion').insert({
+            nombre_nodo1: nodo1[1],
+            tipo_nodo1:nodo1[2],
+            nombre_nodo2:nodo2[1],
+            tipo_nodo2:nodo2[2],
+            capacidad:req.body.capacidad
         })
-    }else{
-        req.flash('asociacionMessage','Error: ambos nodos ya estan asociados')
-    }
+        .then(()=>{
+            resolve(true)
+        })
+        .catch((error)=>{
+            reject(error)
+        })
+    })
 }
 
 function comprobarExistencia(req, res){
@@ -40,7 +33,7 @@ function comprobarExistencia(req, res){
                 resolve(true)
             }
         }).catch((error)=>{
-            console.log("Error")
+            reject(error)
         })
     })
  }
@@ -60,7 +53,7 @@ function comprobarExistencia(req, res){
     })
  }
 
-function cargar(req, res){
+function cargarTabla(req, res){
     return knex.select().table('asociacion')
 }
 
@@ -74,36 +67,37 @@ function cargarAsociacion(req,res){
     })
 }
 
-function eliminar(req, res) {
-   return new Promise(function(resolve,reject){
-       knex('asociacion').where({ id: req.body.asociacionid}).first().del()
-       .then(()=>{
-           servicioAccion.crearAccion(req,res,"Eliminar", "asociacion de id : " + req.body.asociacionid, req.user)
-          .then((resp)=>{})
-           resolve(true)
-       })
-   })
-}
-
-
 function actualizar(req, res) {
    return new Promise(function(resolve,reject){
        knex('asociacion').where({ id: req.body.asociacionid})
        .update({ capacidad: req.body.capacidad})
        .then(()=>{
-           servicioAccion.crearAccion(req,res,"editar", "asociacion de id : " + req.body.asociacionid, req.user)
-          .then((resp)=>{})
            resolve(true)
+       })
+       .catch((error)=>{
+           reject(error)
        })
    })
 }
 
+function eliminar(req, res) {
+   return new Promise(function(resolve,reject){
+       knex('asociacion').where({ id: req.body.asociacionid}).first().del()
+       .then(()=>{
+           resolve(true)
+       })
+       .catch((error)=>{
+           reject(error)
+       })
+   })
+}
 
-  module.exports = {
+module.exports = {
     crear,
-    cargar,
+    cargarTabla,
     cargarAsociacion,
     eliminar,
     actualizar,
-    comprobarCompatibilidad
-  };
+    comprobarCompatibilidad,
+    comprobarExistencia
+}

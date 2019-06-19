@@ -18,7 +18,7 @@ function crear(req, res) {
     })
 }
 
-function cargar(){
+function cargarTabla(){
     return knex.select().table('nodo')
 }
 
@@ -65,7 +65,7 @@ function actualizar(req,res){
 
   module.exports = {
       crear,
-      cargar,
+      cargarTabla,
       cargarNodo,
       eliminar,
       actualizar,

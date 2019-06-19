@@ -1,4 +1,3 @@
-
 const knex = require('../db/connection')
 const servicioAccion = require('./servicioAccion');
 const dao = require('./DAO/nodoDAO');
@@ -13,23 +12,22 @@ async function crear(req, res) {
         req.body.longitud_segundos)
 
      await dao.crear(req,res)
-    .then((nodo)=>{
-        if(nodo){
-            req.flash('nodoMessage','se creo el nodo')
-        }else{
-            req.flash('nodoMessage','Error: no se pudo crear el nodo')
-        }
+    .then(async()=>{
+        req.flash('nodoMessage','se creo el nodo')
+        await servicioAccion.crearAccion(req,res,"crear nodo",
+                       "Nodo: " + req.body.nombreNodo, req.user)
         respuesta = true
     })
-    .catch((error)=>{
+    .catch(async(error)=>{
         if(error.code == 23505){
             req.flash('nodoMessage','Error: Nodo duplicado')
         }else{
             req.flash('nodoMessage','Error: no fue posible crear el nodo')
         }
+        await servicioAccion.crearAccion(req,res,"crear nodo",
+                        "Fallida, error: " + error.code, req.user)
         respuesta = false
     })
-    //TODO agregar la entrada a la bitacora
     return respuesta
 }
 
@@ -52,7 +50,7 @@ function separarCoordenadas(nodo) {
 }
 
 async function cargarTabla(){
-    respuesta = await dao.cargar()
+    respuesta = await dao.cargarTabla()
     return respuesta
 }
 
@@ -79,23 +77,22 @@ async function actualizar(req,res){
         req.body.longitud_segundos)
     var respuesta
     await dao.actualizar(req,res)
-    .then((nodo)=>{
-        if(nodo){
-            req.flash('listaNodoMessage','se actualizo el nodo')
-        }else{
-            req.flash('listaNodoMessage','Error: no se pudo actualizar el nodo')
-        }
+    .then(async()=>{
+        req.flash('listaNodoMessage','se actualizo el nodo')
+        await servicioAccion.crearAccion(req,res,"actualizar nodo",
+                       "Nodo: " + req.body.nombreNodo, req.user)
         respuesta = true
     })
-    .catch((error)=>{
+    .catch(async(error)=>{
         if(error.code == 23505){
             req.flash('listaNodoMessage','Error: Nodo duplicado')
         }else{
             req.flash('listaNodoMessage','Error: no fue posible crear el nodo')
         }
+        await servicioAccion.crearAccion(req,res,"actualizar nodo",
+                        "Fallida, error: " + error.code, req.user)
         respuesta = false
     })
-    //TODO agregar la entrada a la bitacora
     //TODO actualizar las asociaciones
     return respuesta
 }
@@ -103,22 +100,20 @@ async function actualizar(req,res){
 async function eliminar(req,res) {
     var respuesta
     await dao.eliminar(req,res)
-    .then((nodo)=>{
-        if(nodo){
-            req.flash('listaNodoMessage','Nodo Eliminado')
-        }else{
-            req.flash('listaNodoMessagee','Error: no se pudo eliminar el nodo')
-        }
+    .then(async(nodo)=>{
+        req.flash('listaNodoMessage','Nodo Eliminado')
+        await servicioAccion.crearAccion(req,res,"eliminar nodo",
+                       "Nodo: " + req.body.nombreNodo, req.user)
         respuesta = true
     })
-    .catch((error)=>{
+    .catch(async(error)=>{
         req.flash('nodoMessage','Error: no fue posible eliminar el nodo')
+        await servicioAccion.crearAccion(req,res,"eliminar nodo",
+                        "Fallida, error: " + error.code, req.user)
         respuesta = false
     })
 
-    //TODO agregar la entrada a la bitacora, en el then
-    //TODO actualizar las asociaciones en el then
-    //TODO hacer un registro en la bitacora donde salga error de eliminacion
+    //TODO actualizar las asociaciones
     return respuesta
    }
 

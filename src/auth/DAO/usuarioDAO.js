@@ -18,27 +18,16 @@ function crear(req, res) {
             apellido:req.body.lastname,
             supervisor: userType
         })
-        .then((user) => {
-            if(user){
-                req.flash('registerMessage','se creo el usuario')
-                resolve(true)
-            }else{
-                req.flash('registerMessage','Error: no se pudo crear el usuario')
-                resolve(false)
-            }
+        .then(() => {
+            resolve(true)
         })
         .catch((error) =>{
-            if(error.code == 23505){
-                req.flash('registerMessage','usuario duplicado')
-            }else if( error.code != null){
-                req.flash('registerMessage','ocurrio un error')
-            }
-
+            reject(error)
         })
     })
 }
 
-function cargar(){
+function cargarTabla(){
     return knex.select().table('usuario')
 }
 
@@ -46,9 +35,10 @@ function eliminar(req,res){
     return new Promise(function(resolve,reject){
         knex('usuario').where({ nombre: req.body.nombreUsuario}).first().del()
         .then(()=>{
-            servicioAccion.crearAccion(req,res,"Eliminar", "usuario: " + req.body.nombreUsuario, req.user)
-            .then((resp)=>{})
             resolve(true)
+        })
+        .catch((error) =>{
+            reject(error)
         })
     })
 }
@@ -70,21 +60,18 @@ function actualizar(req,res){
             supervisor: userType
          })
         .then(()=>{
-
             resolve(true)
         })
         .catch((error)=>{
             reject(error)
         })
-
-
     })
 }
 
 
   module.exports = {
       crear,
-      cargar,
+      cargarTabla,
       eliminar,
       actualizar,
   };
