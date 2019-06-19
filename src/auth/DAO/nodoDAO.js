@@ -10,23 +10,10 @@ function crear(req, res) {
             tipo_nodo: req.body.tipoNodo
         })
         .then((nodo) => {
-            if(nodo){
-                req.flash('nodoMessage','se creo el nodo')
-                resolve(true)
-            }else{
-                req.flash('nodoMessage','Error: no se pudo crear el nodo')
-                resolve(false)
-            }
+            resolve(nodo)
         })
         .catch((error) =>{
-            if(error.code == 23505){
-                req.flash('nodoMessage','Error: Nodo duplicado')
-                resolve(false)
-            }else{
-                req.flash('nodoMessage','Error: no fue posible crear el nodo')
-                resolve(false)
-            }
-
+            reject(error)
         })
     })
 }
@@ -48,9 +35,10 @@ function eliminar(req,res){
     return new Promise(function(resolve,reject){
         knex('nodo').where({ nombre: req.body.nodoNombre}).first().del()
         .then(()=>{
-            servicioAccion.crearAccion(req,res,"Eliminar", "nodo: " + req.body.nodoNombre, req.user)
-            .then((resp)=>{})
             resolve(true)
+        })
+        .catch((error) => {
+            reject(error)
         })
     })
 }
@@ -66,15 +54,11 @@ function actualizar(req,res){
             tipo_nodo: req.body.tipoNodo
          })
         .then(()=>{
-            
             resolve(true)
         })
         .catch((error)=>{
-
             reject(error)
         })
-
-
     })
 }
 
