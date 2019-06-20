@@ -1,6 +1,6 @@
 const knex = require('../db/connection')
 const servicioAccion = require('./servicioAccion');
-const dao  = require('../auth/DAO/AsociacionDAO');
+const dao  = require('./DAO/AsociacionDAO');
 
 async function crear(req, res) {
     var respuesta
