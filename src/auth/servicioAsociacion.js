@@ -1,107 +1,114 @@
 const knex = require('../db/connection')
-const servicioAccion = require('../auth/servicioAccion');
+const servicioAccion = require('./servicioAccion');
+const dao  = require('./DAO/asociacionDAO');
 
-async function crearAsociacion(req, res) {
-    campo = req.body
-    nodo1 = campo.primerNodo.split("-")
-    nodo2 = campo.segundoNodo.split("-")
-    compatible = true;
+async function crear(req, res) {
+    var respuesta
+    req.body.primerNodo = req.body.primerNodo.split("-")
+    req.body.segundoNodo = req.body.segundoNodo.split("-")
+    nodo1 = req.body.primerNodo
+    nodo2 = req.body.segundoNodo
+
+    compatible = false;
     if(nodo1[2] === "Generacion" && nodo2[2] === "Termoelectrica"){
-        compatible = await comprobarCompatibilidad(req,res,nodo2[1],nodo2[2])
+        compatible = await dao.comprobarCompatibilidad(req,res)
     }
 
-    if(compatible && (
-        nodo1[2] === "Generacion" && nodo2[2] === "Termoelectrica"||
-        nodo1[2] === "Generacion" && nodo2[2] ==="Distribucion" ||
-        nodo1[2] === "Termoelectrica" && nodo2[2]  ==="Distribucion" ||
-        nodo1[2] === "Distribucion"   && nodo2[2] ==="Distribucion"
-    )&& nodo1[2] != nodo2){
-        respuesta = await crearAsociacionDAO(req,res,nodo1,nodo2,campo)
-        if(respuesta){
-            req.flash('asociacionMessage','Asociacion creada')
-        }else {
-            req.flash('asociacionMessage','No se pudo crear el nodo')
-        }
-        return respuesta
+    if(compatible || ( nodo1[2] === "Generacion" && nodo2[2] === "Distribucion"
+    || nodo1[2] === "Termoelectrica" && nodo2[2] === "Distribucion"
+    || nodo1[2] === "Distribucion" && nodo2[2] === "Distribucion"   )
+    && nodo1[2] != nodo2[2] ) {
+
+        respuesta = ejecutaCreacionAsociacion(req,res)
+
     }else{
-        req.flash('asociacionMessage','Nodos no compatibles')
+        req.flash('asociacionMessage','la relacion '+nodo1[2] +' -> '+ nodo2[2] +' no es compatible')
+
     }
 
+    return respuesta
 }
 
-function crearAsociacionDAO(req,res,nodo1,nodo2,campo){
-    return new Promise(function(resolve,reject){
-        resolve(true)
-        knex('asociacion').insert({
-            nombre_nodo1:nodo1[1],
-            tipo_nodo1:nodo1[2],
-            nombre_nodo2:nodo2[1],
-            tipo_nodo2:nodo2[2],
-            capacidad:campo.capacidad
-        })
-        .then((asociacion)=>{
-            servicioAccion.crearAccion(req,res,"crear", "asociacion " + nodo1[1] + " "+ nodo2[1], req.user)
-            .then((resp)=>{})
-            resolve(true)
-        })
-        .catch((error)=>{
-            if(error.code == 23505){
-                req.flash('asociacionMessage','asociacion duplicado')
-            }else if( error.code != null){
-                req.flash('asociacionMessage','ocurrio un error')
-            }
-            reject()
-        })
+async function ejecutaCreacionAsociacion(req,res){
+    var respuesta
+    await dao.comprobarExistencia(req,res)
+    .then(async (exitencia)=>{
+
+        if(exitencia){
+            req.flash('asociacionMessage','Error: ambos nodos ya estan asociados')
+            respuesta = false
+        }else{
+            await dao.crear(req,res)
+            .then((resp)=>{
+                req.flash('asociacionMessage','Asociacion creada')
+                servicioAccion.crearAccion(req,res,"crear asociacion",
+                               "asociacion: " + req.body.nombreAsociacion, req.user)
+                respuesta = true
+            })
+            .catch((error)=>{
+                req.flash('asociacionMessage',' no se pudo crear la asociacion')
+                servicioAccion.crearAccion(req,res,"crear asociacion",
+                                "Fallida, error: " + error.code, req.user)
+                respuesta = false
+            })
+        }
     })
- }
-
-function comprobarCompatibilidad(req, res, nombreNodo,tipoDeNodo) {
-   return new Promise(function(resolve,reject){
-       knex('asociacion').where({ nombre_nodo1: nombreNodo}).first()
-       .then((asociacion)=>{
-           if(!asociacion){
-               req.flash('asociacionMessage','Error: no se pudo comprobar la compatibilidad')
-               resolve(false)
-           }else if(asociacion.tipo_nodo2 == "Distribucion"){
-               resolve(true)
-           }else{
-               resolve(false)
-           }
-       })
-   })
+    .catch((error)=>{
+        req.flash('asociacionMessage','Error: no se pudo crear la asociacion')
+        respuesta = false
+    })
+    return respuesta
 }
 
-function pedirTabla(req, res){
-    return knex.select().table('asociacion')
+async function cargarTabla(req, res){
+    respuesta = await dao.cargarTabla(req,res)
+    return respuesta
 }
 
-function eliminarAsociacion(req, res) {
-   return new Promise(function(resolve,reject){
-       knex('asociacion').where({ id: req.body.asociacionid}).first().del()
-       .then(()=>{
-           servicioAccion.crearAccion(req,res,"Eliminar", "asociacion de id : " + req.body.asociacionid, req.user)
-          .then((resp)=>{})
-           resolve(true)
-       })
-   })
+async function cargarAsociacion(req,res){
+    respuesta = await dao.cargarAsociacion(req,res)
+    return respuesta
 }
 
-
-function editaAsociacion(req, res) {
-   return new Promise(function(resolve,reject){
-       knex('asociacion').where({ id: req.body.asociacionid}).update({ capacidad: req.body.capacidad})
-       .then(()=>{
-           servicioAccion.crearAccion(req,res,"editar", "asociacion de id : " + req.body.asociacionid, req.user)
-          .then((resp)=>{})
-           resolve(true)
-       })
-   })
+async function actualizar(req,res){
+    var respuesta
+    await dao.actualizar(req,res)
+    .then(()=>{
+        servicioAccion.crearAccion(req,res,"actualizar asociacion",
+                       "asociacion: " + req.body.nombreAsociacion, req.user)
+        respuesta = true
+    })
+    .catch((error)=>{
+        req.flash('listaAsociacionMessage','Error: no se pudo actualizar la asociacion')
+        servicioAccion.crearAccion(req,res,"actualizar asociacion",
+                        "Fallida, error: " + error.code, req.user)
+        respuesta = false
+    })
+    return respuesta
 }
 
+async function eliminar(req, res){
+    var respuesta
+    await dao.eliminar(req,res)
+    .then(()=>{
+        servicioAccion.crearAccion(req,res,"eliminar asociacion",
+                       "asociacion: " + req.body.nombreAsociacion, req.user)
+        respuesta = true
+    })
+    .catch((error)=>{
+        req.flash('listaAsociacionMessage','Error: no se logro eliminar la asociacion')
+        servicioAccion.crearAccion(req,res,"eliminar asociacion",
+                        "Fallida, error: " + error.code, req.user)
+        respuesta = false
+    })
+
+    return respuesta
+}
 
   module.exports = {
-    crearAsociacion,
-    pedirTabla,
-    eliminarAsociacion,
-    editaAsociacion
+    cargarTabla,
+    cargarAsociacion,
+    crear,
+    actualizar,
+    eliminar
   };

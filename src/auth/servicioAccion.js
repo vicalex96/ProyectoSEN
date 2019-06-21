@@ -1,22 +1,27 @@
 const knex = require('../db/connection')
+const dao = require('./DAO/accionDAO');
+const servicioAccion = require('./servicioAccion');
 
-function crearAccion(req, res, tipoDeAccion, objeto, operador) {
-    return knex('accion').insert({
-            tipo_accion: tipoDeAccion,
-            objeto_afectado: objeto,
-            nombre_operador: operador.nombre,
-            id_operador: operador.id
-        })
+async function crearAccion(req, res, tipoDeAccion, objeto, operador) {
+    var respuesta
+    await dao.crear(req,res, tipoDeAccion, objeto, operador)
+    .then(()=>{
+        console.log("salimos")
+        repuesta =true
+    })
+    .catch((error)=>{
+        console.log("error: " + error.code)
+        respuesta = false
+    })
+    return respuesta
     }
 
-
-
-function pedirTabla(req, res){
-    return knex.select().table('accion')
+async function cargarTabla(req, res){
+    respuesta = await dao.cargarTabla(req,res)
+    return respuesta
 }
-
 
   module.exports = {
     crearAccion,
-    pedirTabla
+    cargarTabla,
   };

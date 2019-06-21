@@ -1,7 +1,7 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 
-const authHelpers = require('./_helpers');
+const servicioUsuario = require('./servicioUsuario');
 const init = require('./passport');
 const knex = require('../db/connection.js');
 
@@ -40,7 +40,7 @@ function validatePass(req,usuario, password,done){
   var idup = usuario.id
   var aumentoContador= usuario.contador+1
 
-  if (authHelpers.comparePass(password, usuario.contrasena)){
+  if (servicioUsuario.comparePass(password, usuario.contrasena)){
     return true
   }
   else {

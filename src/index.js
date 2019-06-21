@@ -2,11 +2,9 @@ const express = require("express")
 const app = express()
 const path = require("path")
 const passport = require("passport")
-const cookieParser = require("cookie-parser")
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const cookieSession = require('cookie-session')
-const session = require('express-session')
 const flash = require('connect-flash')
 const bcrypt = require('bcrypt')
 const methodOverride = require('method-override');
@@ -33,7 +31,8 @@ app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, '..', '..', 'client')));
 
 require(__dirname + '/server/routes.js')(app)
-require(__dirname + '/server/grafoRoutes.js')(app)
+require(__dirname + '/server/nodoRoutes.js')(app)
+require(__dirname + '/server/asociacionRoutes.js')(app)
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');

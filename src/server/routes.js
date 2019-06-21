@@ -1,10 +1,10 @@
 
 const rout = require("path")
-const authHelpers = require('../auth/_helpers');
+const servicioUsuario = require('../auth/servicioUsuario');
 const servicioNodo = require('../auth/servicioNodo');
 const servicioAsociacion = require('../auth/servicioAsociacion');
 const servicioAccion = require('../auth/servicioAccion');
-const passport = require('../auth/local');
+const passport = require('../auth/servicioSesion');
 const fs = require('fs')
 
 module.exports = (app) => {
@@ -39,7 +39,7 @@ module.exports = (app) => {
       }
     })
 
-    app.post('/login', authHelpers.loginRedirect, (req, res, next) => {
+    app.post('/login', (req, res, next) => {
       passport.authenticate('local', {
     		successRedirect: '/perfil',
     		failureRedirect: '/login',
@@ -71,69 +71,43 @@ module.exports = (app) => {
       }
     })
 
-  app.post('/register', (req, res, next)  => {
-      return authHelpers.createUser(req, res)
-      .catch((err) => {
-          res.redirect('/register')
-      });
-      res.redirect('/register')
-  });
-
-app.get('/logout', authHelpers.loginRequired, (req, res, next) => {
-      req.logout();
-      handleResponse(res, 200, res.redirect('/login'));
-
+    app.post('/register', async (req, res)  => {
+        respuesta = await servicioUsuario.crear(req, res)
+        res.redirect('/register')
     });
 
-app.get('/userAdministration', function (req, res) {
-      if (req.isAuthenticated() && req.user.supervisor) {
+    app.get('/logout', (req, res) => {
+        if (req.isAuthenticated()){
+            req.logout();
+        }
+        res.redirect('/login')
+    });
 
-        authHelpers.pedirTabla(req, res)
-        .then((tablaUsuarios) => {
+    app.get('/userAdministration', async (req, res) => {
+        if (req.isAuthenticated() && req.user.supervisor) {
+            usuarios = await servicioUsuario.cargarTabla(req, res)
             res.render('viewUserAdministration',{
                 logged: true,
                 user: req.user,
-                usuarios: tablaUsuarios,
-               })
-           })
-           .catch((error) => {
-
-           })
-      }else{
-        res.redirect('/home')
-      }
-    })
-
-    app.get('/bitacora', function (req, res) {
-        if (req.isAuthenticated()) {
-            servicioAccion.pedirTabla(req, res)
-            .then((tablaAccion) => {
-                res.render('viewBitacora',{
-                    logged: true,
-                    user: req.user,
-                    acciones: tablaAccion
-                })
+                usuarios: usuarios,
             })
-            .catch((error) => {
-
-            });
         }else{
             res.redirect('/home')
         }
     })
 
-  function handleLogin(req, user) {
-    return new Promise((resolve, reject) => {
-      req.login(user, (err) => {
-        if (err) reject(err);
-        resolve();
-      });
-    });
-  }
-
-  function handleResponse(res, code, statusMsg) {
-    res.status(code).json({status: statusMsg});
-  }
+    app.get('/bitacora', async (req, res) => {
+        if (req.isAuthenticated()) {
+            acciones = await servicioAccion.cargarTabla(req, res)
+            res.render('viewBitacora',{
+                    logged: true,
+                    user: req.user,
+                    acciones: acciones
+            })
+        }else{
+            res.redirect('/home')
+        }
+    })
 
   function isLoggedIn (req, res, next) {
 	   if (req.isAuthenticated()) {

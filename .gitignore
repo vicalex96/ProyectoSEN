@@ -1,4 +1,7 @@
 node_modules
-connection
-knexfile
+connection.js
+knexfile.js
 
+
+src/knexfile.js
+src/db/connection.js
