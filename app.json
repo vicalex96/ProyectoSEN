@@ -1,0 +1,22 @@
+    
+{
+  "addons": [
+    "heroku-postgresql"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ],
+  "env": {
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "name": "dejesus-ledezma-vasquez",
+  "scripts": {
+  },
+  "stack": "heroku-18"
+}
