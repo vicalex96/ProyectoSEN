@@ -1,0 +1,100 @@
+<div class=" container modal-dialog col-md-6 mb-3">
+    <div class="color modal-content text-center">
+      <form class=" needs-validation" action="/usuario/actualizar" method="post" novalidate>
+          <br>
+          <h4 class= " text-center"> Editar información usuario </h4>
+
+
+          <% if (message.length > 0) { %>
+            <div class="alert alert-danger">
+              <%= message %>
+            </div>
+          <% } %>
+
+          <input type="text" class="invisible esconde" name="id" id="id"
+                value="<%= usuario.id %>">
+          <div class="col-md-8 mb-3">
+          <div class="input-group">
+          <div class="input-group-prepend">
+              <span class="input-group-text" id="username">@</span>
+          </div>
+          <input type="text" class="form-control" name="userName" id="userName"
+
+                 minlength="4" maxlength="12" placeholder="nombre de usuario*"
+                 aria-describedby="inputGroupPrepend" value="<%=usuario.nombre_usuario %>" required>
+          <div class="invalid-feedback">
+              Requerido: <br>
+              minimo 4 caracteres <br>
+              maximo 12
+          </div>
+          </div>
+          </div>
+
+          <div class="col-md-8 mb-3">
+          <div class="form-group">
+              <select name="userType" class="custom-select browser-default" required>
+                <%if (usuario.supervisor){%>
+                  <option value="Supervisor"> Supervisor </option>
+                  <option value="Operador">Operador</option>
+                <%} else {%>
+                  <option value="Operador"> Operador</option>
+                    <option value="Supervisor">Supervisor</option>
+                <%}%>
+
+
+
+              </select>
+              <div class="invalid-feedback">Seleciona una opcion</div>
+          </div>
+          </div>
+
+          <div class="form-row center">
+          <div class="col-md-6 mb-3">
+
+              <div class="input-group">
+                  <div class="input-group-prepend">
+                      <span class="input-group-text" id="inputGroupPrepend">N</span>
+                  </div>
+                  <input type="text" class="form-control" name="name" id="name"
+                      maxlength="50" placeholder="Nombre*"
+                      aria-describedby="inputGroupPrepend" value= "<%=usuario.nombre %>"  required>
+                  <div class="invalid-feedback">
+                      introduce el nombre
+                  </div>
+              </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroupPrepend">A</span>
+                </div>
+                <input type="text" class="form-control" name="lastname" id="lastname"
+                       maxlength="50" placeholder="apellido*"
+                       aria-describedby="inputGroupPrepend" value= "<%=usuario.apellido %>" required>
+                <div class="invalid-feedback">
+                  introduce el apellido
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="center mb-3">
+            <% if (usuario.bloqueado == true) { %>
+          <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="customSwitch1"  name="bloqueado" checked>
+            <label class="custom-control-label" for="customSwitch1">Bloqueado</label>
+          </div>
+          <%}else{%>
+            <div class="custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="customSwitch1" name="bloqueado" disabled>
+              <label class="custom-control-label" for="customSwitch1">Bloqueado</label>
+
+            </div>
+            <%}%>
+              </div>
+          <button class="btn btn-success btn-sm mb-4" type="submit"> Actualizar</button>
+        </form>
+            </div>
+          </div>

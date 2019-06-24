@@ -36,7 +36,7 @@ async function cargarTabla(){
     return respuesta
 }
 
-async function actualizar(){
+async function actualizar(req,res){
     var respuesta
     await dao.actualizar(req,res)
     .then(async(resp)=>{
@@ -80,6 +80,21 @@ function loginRedirect(req, res, next) {
     return next();
   }
 
+
+  async function cargarUsuario(req,res){
+      var respuesta
+      await dao.cargarUsuario(req,res)
+      .then((usuario)=>{
+          respuesta = usuario
+      })
+      .catch((error)=>{
+          req.flash('usuarioMessage','Error: usuario no encontrado')
+          respuesta = false
+      })
+
+      return respuesta
+  }
+
 module.exports = {
     comparePass,
     crear,
@@ -87,5 +102,6 @@ module.exports = {
     actualizar,
     loginRequired,
     adminRequired,
-    loginRedirect
+    loginRedirect,
+    cargarUsuario
   };
