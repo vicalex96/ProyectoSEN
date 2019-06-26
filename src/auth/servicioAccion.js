@@ -6,11 +6,9 @@ async function crearAccion(req, res, tipoDeAccion, objeto, operador) {
     var respuesta
     await dao.crear(req,res, tipoDeAccion, objeto, operador)
     .then(()=>{
-        console.log("salimos")
         repuesta =true
     })
     .catch((error)=>{
-        console.log("error: " + error.code)
         respuesta = false
     })
     return respuesta

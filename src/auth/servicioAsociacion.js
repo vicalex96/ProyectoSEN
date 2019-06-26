@@ -74,14 +74,15 @@ async function actualizar(req,res){
     var respuesta
     await dao.actualizar(req,res)
     .then(()=>{
+        req.flash('listaAsociacionMessage','Asociacion de id:' + req.body.asociacionid + ' actualizada')
         servicioAccion.crearAccion(req,res,"actualizar asociacion",
-                       "asociacion: " + req.body.nombreAsociacion, req.user)
+                       "asociacion id: " + req.body.asociacionid, req.user)
         respuesta = true
     })
     .catch((error)=>{
         req.flash('listaAsociacionMessage','Error: no se pudo actualizar la asociacion')
         servicioAccion.crearAccion(req,res,"actualizar asociacion",
-                        "Fallida, error: " + error.code, req.user)
+                        "Fallida, error: " + error.code + " sobre asociacion id: " + asociacionid, req.user)
         respuesta = false
     })
     return respuesta
@@ -91,8 +92,9 @@ async function eliminar(req, res){
     var respuesta
     await dao.eliminar(req,res)
     .then(()=>{
+        req.flash('listaAsociacionMessage','Asociacion Eliminada')
         servicioAccion.crearAccion(req,res,"eliminar asociacion",
-                       "asociacion: " + req.body.nombreAsociacion, req.user)
+                       "asociacion id: " + req.body.asociacionid, req.user)
         respuesta = true
     })
     .catch((error)=>{
@@ -105,10 +107,22 @@ async function eliminar(req, res){
     return respuesta
 }
 
+async function comprobarExistenciaDeAsociacion(req,res){
+    var respuesta
+    elementoExistente = await dao.buscarExistenciaAsociacion(req,res)
+    if(elementoExistente){
+        respuesta = true
+    }else{
+        respuesta = false
+    }
+    return respuesta
+}
+
   module.exports = {
     cargarTabla,
     cargarAsociacion,
     crear,
     actualizar,
-    eliminar
+    eliminar,
+    comprobarExistenciaDeAsociacion
   };

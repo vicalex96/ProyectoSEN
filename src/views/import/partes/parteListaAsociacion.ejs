@@ -1,4 +1,16 @@
-<div class=" container centrade color-white">
+<div class=" container modal-dialog modal-content color text-center col-md-4 mb-3">
+<h1> Tabla Asociaciones</h1>
+</div>
+
+<div class=" container center modal-dialog col-md-6 mb-3">
+<% if (message.length > 0) { %>
+  <div class="alert alert-danger">
+	<%= message %>
+  </div>
+<% } %>
+</div>
+
+<div class=" container modal-content  color centrade">
 	<div class="row">
 	<table id="table" class="fixed table table-striped table-bordered table-dark" style="width:100%">
         <thead>
