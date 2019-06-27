@@ -10,7 +10,7 @@ const fs = require('fs')
 module.exports = (app) => {
 app.post ('/usuario/actualizar', async (req, res)=>{
 
-  servicioUsuario.actualizar(req, res)
+  respuesta = await servicioUsuario.actualizar(req, res)
     res.redirect('/userAdministration')
 } )
 

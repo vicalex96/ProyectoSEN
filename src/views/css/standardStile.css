@@ -56,10 +56,20 @@ body {
 .ajustar{
     width: 50px
 }
-.ajustar{
-    width: 60px
-}
 
 .esconde{
     width: 0px
+}
+
+.paddingnull{
+    margin-top: 50px;
+    margin-left: fixed;
+
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.diplayOff{
+    display: none;
+
 }

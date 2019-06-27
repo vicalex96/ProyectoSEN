@@ -109,6 +109,25 @@ module.exports = (app) => {
         }
     })
 
+    app.get('/grafo', async function (req, res) {
+        if (req.isAuthenticated()) {
+           tablaNodo = await servicioNodo.cargarTabla(req, res);
+           servicioNodo.adapatarCoordenasAGrafoGD(tablaNodo)
+
+          res.render('viewGrafo', {
+            logged: true,
+            user: req.user,
+            nodos: tablaNodo,
+
+          });
+        }else{
+          res.render('viewHome', {
+            logged: false,
+            supervisor: false,
+          });
+        }
+    })
+
   function isLoggedIn (req, res, next) {
 	   if (req.isAuthenticated()) {
 		     return next();

@@ -127,11 +127,43 @@ async function eliminar(req,res) {
     return respuesta
 }
 
+function pasarCoordenadasDeStringAJson(nodos) {
+    for(i=0; i < nodos.length; i++ ){
+        latitud = nodos[i].latitud
+        nodos[i].latitud = [
+            parseInt(latitud.split("°")[0]),
+            parseInt((latitud.split("°")[1]).split('`')[0]),
+            parseInt(((latitud.split("°")[1]).split('`')[1]).split('"')[0])
+        ]
+        longitud = nodos[i].longitud
+        nodos[i].longitud = [
+            parseInt(longitud.split("°")[0]),
+            parseInt((longitud.split("°")[1]).split('`')[0]),
+            parseInt(((longitud.split("°")[1]).split('`')[1]).split('"')[0])
+        ]
+    }
+}
+function convertirGMSaGD(coordenada){
+    signo = coordenada[0]/Math.abs(coordenada[0])
+    coordenada = signo *(Math.abs(coordenada[0]) + coordenada[1] / 60 + coordenada[2] / 3600)
+    return coordenada
+}
+
+function adapatarCoordenasAGrafoGD(nodos){
+    pasarCoordenadasDeStringAJson(nodos)
+    for(i=0; i < nodos.length; i++ ){
+        latitud = convertirGMSaGD(nodos[i].latitud)
+        longitud = convertirGMSaGD(nodos[i].longitud)
+        nodos[i].coordenadas = [ longitud, latitud ]
+    }
+}
+
 module.exports = {
     separarCoordenadas,
     cargarTabla,
     cargarNodo,
     crear,
     actualizar,
-    eliminar
+    eliminar,
+    adapatarCoordenasAGrafoGD
 }
