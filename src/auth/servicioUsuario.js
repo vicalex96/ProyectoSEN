@@ -12,7 +12,6 @@ async function crear(req, res) {
     await dao.crear(req,res)
     .then(async() => {
             req.flash('registerMessage','se creo el usuario')
-            console.log("a guardar la accion")
             await servicioAccion.crearAccion(req,res,"crear usuario",
                             "Usuario: " + req.body.userName, req.user)
             respuesta = true
@@ -23,7 +22,6 @@ async function crear(req, res) {
         }else if( error.code != null){
             req.flash('registerMessage','ocurrio un error')
         }
-        console.log("a guardar la accion error")
         await servicioAccion.crearAccion(req,res,"crear usuario",
                         "Fallida, error: " + error.code, req.user)
         respuesta = false

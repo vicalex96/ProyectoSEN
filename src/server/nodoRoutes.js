@@ -8,7 +8,6 @@ const passport = require('../auth/servicioSesion');
 const fs = require('fs')
 
 module.exports = (app) => {
-    //TODO: mostrar los mensajes de erroro en las listas de nodo
 
     app.get('/nodos', async (req, res) =>{
         if (req.isAuthenticated()) {
@@ -17,6 +16,7 @@ module.exports = (app) => {
                 res.render('viewGrafoNodo',{
                     logged: true,
                     user: req.user,
+                    message : req.flash('listaNodoMessage'),
                     nodos: tablaNodo
                 })
             }

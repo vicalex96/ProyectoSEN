@@ -2,15 +2,13 @@
     <div class="color modal-content text-center">
         <form class=" needs-validation" action="/nodos/actualizar" method="post" novalidate>
             <br>
-            <h4 class= " text-center"> Editar un nodo </h4>
-            <h6 class= " text-center"> Atencion al editar el tipo de central se 
-                perderan las asociaciones de este nodo </h6>
-
+            <h4 class= " text-center"> Editar nodo </h4>
             <% if (message.length > 0) { %>
               <div class="alert alert-danger">
                 <%= message %>
               </div>
             <% } %>
+
             <input type="text" class="invisible esconde" name="id" id="id"
                   value="<%= nodo.id %>">
 
@@ -26,18 +24,6 @@
                 campo no puede estar vacio
                 minimo 4 caracteres
             </div>
-            </div>
-            </div>
-
-            <div class=" col-md-6 mb-3">
-            <div class=" form-group">
-                <select name="tipoNodo" class="custom-select browser-default" required>
-                    <option value="<%=nodo.tipo_nodo %>"> - Central <%=nodo.tipo_nodo %> </option>
-                    <option value="Generacion">Central de Generación</option>
-                    <option value="Termoelectrica">Central Termoeléctrica</option>
-                    <option value="Distribucion">Centro de Distribución</option>
-                </select>
-                <div class="invalid-feedback">Seleciona una opcion</div>
             </div>
             </div>
 

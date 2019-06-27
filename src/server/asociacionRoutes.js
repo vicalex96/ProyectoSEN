@@ -8,8 +8,7 @@ const passport = require('../auth/servicioSesion');
 const fs = require('fs')
 
 module.exports = (app) => {
-    //TODO: mostrar los mensajes de erroro en las listas de asociaciones
-    
+
     app.get('/asociaciones', async (req, res) => {
         if (req.isAuthenticated()) {
             tablaAsociacion = await servicioAsociacion.cargarTabla(req,res)
@@ -17,6 +16,7 @@ module.exports = (app) => {
                 res.render('viewGrafoAsociacion',{
                     logged: true,
                     user: req.user,
+                    message : req.flash('listaAsociacionMessage'),
                     asociaciones: tablaAsociacion
                 })
             }
