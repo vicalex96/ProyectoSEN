@@ -33,6 +33,7 @@ app.use(express.static(path.join(__dirname, '..', '..', 'client')));
 require(__dirname + '/server/routes.js')(app)
 require(__dirname + '/server/nodoRoutes.js')(app)
 require(__dirname + '/server/asociacionRoutes.js')(app)
+require(__dirname + '/server/usuariosRoutes.js')(app)
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');

@@ -46,6 +46,7 @@ function eliminar(req,res){
 function actualizar(req,res){
     return new Promise(function(resolve,reject){
         nodoid = parseInt(req.body.id)
+      
         knex('nodo').where({ id: nodoid}).first()
         .update({nombre: req.body.nombreNodo,
             latitud: req.body.coordenaLatitud,

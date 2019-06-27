@@ -10,6 +10,7 @@
                 <th>apellido</th>
                 <th>cargo</th>
                 <th>bloqueado</th>
+								<th> editar </th>
             </tr>
         </thead>
         <tbody>
@@ -18,7 +19,7 @@
 					<th ><%= usuarios[i].id %></th>
 					<th ><% if(usuarios[i].supervisor){%> SUP<%} else {%>
 	                OPE<%}%>-<%=usuarios[i].id%>-<%= (usuarios[i].id+3000000).toString(16) %></th>
-                    <th ><%= usuarios[i].nombre_usuario %></th>
+                    <th ><%= usuarios[i].nombre_usuario%></th>
                     <th ><%= usuarios[i].nombre %></th>
                     <th ><%= usuarios[i].apellido %></th>
 					<th ><% if(usuarios[i].supervisor){%>
@@ -27,12 +28,21 @@
 						operador
 					<%}%> </th>
 					<th >
-						<input type="checkbox" name="bloqueado"
+						<input type="checkbox" name="bloqueado"s
 						<%if(usuarios[i].bloqueado){%>
 							checked <%}%> disabled>
 
 					</th>
+
+					<th>
+					<form class="" action="/usuarios/editar" method="get">
+						<input type="" class="invisible esconde" name="usuarioid" id="usuarioid"
+														value="<%= usuarios[i].id %>">
+						<input type="submit" value= "editar" class=" btn btn-success">
+						</form>
+					</th>
                 </tr>
+
             <% } %>
 		</tbody>
     </table>
