@@ -1,33 +1,44 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en" dir="ltr">
     <head>
+        <meta charset="utf-8">
+        <title>prueba de grafo</title>
         <% include import/viewhtmlHeader.ejs %>
-        <link rel="stylesheet" href="css/standardStile.css">
-        <link rel="stylesheet" href="css/registerStile.css">
-
+        <link rel="stylesheet" href="../css/standardStile.css">
+        <link rel="stylesheet" href="../css/registerStile.css">
+        <script src="https://d3js.org/d3.v4.js"></script>
+        <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+        <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
     </head>
     <body>
-
         <% include import/viewHeader.ejs %>
 
-        <% if (messageAction.length > 0) { %>
-          <div class="alert alert-danger">
-            <%= messageAction %>
-          </div>
-        <% } %>
+        <div class=" container modal-dialog modal-content color text-center col-md-4 ">
+        <h1> Mapa</h1>
+        </div>
 
-            <% include import/partes/parteRegistrarNodo.ejs %>
-
-            <% include import/partes/parteRegistrarAsociacion.ejs %>
-
-            <% include import/partes/parteListaNodos.ejs %>
-
-            <% include import/partes/tablamodelo.ejs %>
+        <svg class="container  modal-content  centrade color-white  center paddingnull col-md-5"
+        id="my_dataviz" width="500" height="430"> </svg>
 
 
+        <div id="infoNodo" class="container modal-content color col-md-3 mb-3 diplayOff">
+          nombre: <span id="nombre" class="info"></span><br>
+          tipo: <span id="tipo" class="info"></span><br>
+          longitud: <span id="longitud" class="info"></span><br>
+          latitud: <span id="latitud" class="info"></span><br>
+        </div>
 
+        <div id="infoAsociacion" class="container modal-content color col-md-3 diplayOff">
+          nodo de salida: <span id="nodoSalida" class="info"></span><br>
+          nodo de llegada: <span id="nodoLlegada" class="info"></span><br>
+          capacidad: <span id="capacidad" class="info"></span><br>
+        </div>
 
-        <script src="js/grafoValidation.js"></script>
+        <script>
+        var nodes = <%- JSON.stringify(nodos) %>
+        var association = <%- JSON.stringify(asociaciones) %>
+        </script>
+        <script src="graph/grafoCargarMapa.js"></script>
         <% include import/BSConnect.ejs %>
     </body>
 </html>

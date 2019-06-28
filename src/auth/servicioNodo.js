@@ -1,5 +1,6 @@
 const knex = require('../db/connection')
 const servicioAccion = require('./servicioAccion');
+const servicioAsociacion = require('./servicioAsociacion');
 const dao = require('./DAO/nodoDAO');
 
 async function crear(req, res) {
@@ -69,6 +70,8 @@ async function cargarNodo(req,res){
 }
 
 async function actualizar(req,res){
+
+    var nodoOriginal = req.body
     req.body.coordenaLatitud  = juntarCoordenadas(req.body.latitud_grados,
         req.body.latitud_minutos,
         req.body.latitud_segundos)
@@ -85,12 +88,13 @@ async function actualizar(req,res){
     })
     .catch(async(error)=>{
         if(error.code == 23505){
-            req.flash('listaNodoMessage','Error: Nodo duplicado')
+            req.flash('listaNodoMessage','Error: no se pudo actualizar el nodo '+
+                                        nodoOriginal.nombreNodo +', el nombre indicado ya existe')
         }else{
-            req.flash('listaNodoMessage','Error: no fue posible crear el nodo')
+            req.flash('listaNodoMessage','Error: no fue posible actualizar el nodo')
         }
-        await servicioAccion.crearAccion(req,res,"actualizar nodo",
-                        "Fallida, error: " + error.code, req.user)
+        await servicioAccion.crearAccion(req,res,"actualizar nodo ",
+                         "Fallida, error: " + error.code + " sobre:" + nodoOriginal.nombreNodo, req.user)
         respuesta = false
     })
     //TODO actualizar las asociaciones
@@ -99,23 +103,60 @@ async function actualizar(req,res){
 
 async function eliminar(req,res) {
     var respuesta
-    await dao.eliminar(req,res)
-    .then(async(nodo)=>{
-        req.flash('listaNodoMessage','Nodo Eliminado')
-        await servicioAccion.crearAccion(req,res,"eliminar nodo",
-                       "Nodo: " + req.body.nombreNodo, req.user)
-        respuesta = true
-    })
-    .catch(async(error)=>{
-        req.flash('nodoMessage','Error: no fue posible eliminar el nodo')
-        await servicioAccion.crearAccion(req,res,"eliminar nodo",
-                        "Fallida, error: " + error.code, req.user)
+    var nodoAfectado = req.body.nodoNombre
+    existe = await servicioAsociacion.comprobarExistenciaDeAsociacion(req,res)
+    if(!existe){
+        await dao.eliminar(req,res)
+        .then(async()=>{
+            req.flash('listaNodoMessage','Nodo Eliminado')
+            await servicioAccion.crearAccion(req,res,"eliminar nodo",
+                           "Nodo: " + req.body.nodoNombre, req.user)
+            respuesta = true
+        })
+        .catch(async(error)=>{
+            req.flash('listaNodoMessage','Error: no fue posible eliminar el nodo')
+            await servicioAccion.crearAccion(req,res,"eliminar nodo",
+                            "Fallida, error: " + error.code + " sobre :" + req.body.nodoNombre, req.user)
+            respuesta = false
+        })
+    }else{
+        req.flash('listaNodoMessage',"Error: el nodo "+ req.body.nodoNombre +
+                        " esta asociado a otros nodos, elimine primero sus asociaciones")
         respuesta = false
-    })
-
-    //TODO actualizar las asociaciones
+    }
     return respuesta
-   }
+}
+
+function pasarCoordenadasDeStringAJson(nodos) {
+    for(i=0; i < nodos.length; i++ ){
+        latitud = nodos[i].latitud
+        nodos[i].latitud = [
+            parseInt(latitud.split("°")[0]),
+            parseInt((latitud.split("°")[1]).split('`')[0]),
+            parseInt(((latitud.split("°")[1]).split('`')[1]).split('"')[0])
+        ]
+        longitud = nodos[i].longitud
+        nodos[i].longitud = [
+            parseInt(longitud.split("°")[0]),
+            parseInt((longitud.split("°")[1]).split('`')[0]),
+            parseInt(((longitud.split("°")[1]).split('`')[1]).split('"')[0])
+        ]
+    }
+}
+function convertirGMSaGD(coordenada){
+    signo = coordenada[0]/Math.abs(coordenada[0])
+    coordenada = signo *(Math.abs(coordenada[0]) + coordenada[1] / 60 + coordenada[2] / 3600)
+    return coordenada
+}
+
+function adapatarCoordenasAGrafoGD(nodos){
+    pasarCoordenadasDeStringAJson(nodos)
+    for(i=0; i < nodos.length; i++ ){
+        latitud = convertirGMSaGD(nodos[i].latitud)
+        longitud = convertirGMSaGD(nodos[i].longitud)
+        nodos[i].coordenadas = [ longitud, latitud ]
+    }
+}
 
 module.exports = {
     separarCoordenadas,
@@ -123,5 +164,6 @@ module.exports = {
     cargarNodo,
     crear,
     actualizar,
-    eliminar
+    eliminar,
+    adapatarCoordenasAGrafoGD
 }

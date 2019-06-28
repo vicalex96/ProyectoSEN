@@ -21,17 +21,18 @@ body {
     padding: 0 200px 0 200px
 }
 .center{
- color: #fff;
+ color: #000;
  font-size: 20px;
  display: flex;
  justify-content: center;
  align-items: center;
  padding: 0 20px 0 20px;
 
+
 }
 .textBorder{
     -webkit-text-stroke-width: 1px;
-   -webkit-text-stroke-color: #fff;
+   -webkit-text-stroke-color: #000;
 }
 
 .navbar{
@@ -56,10 +57,20 @@ body {
 .ajustar{
     width: 50px
 }
-.ajustar{
-    width: 60px
-}
 
 .esconde{
     width: 0px
+}
+
+.paddingnull{
+    margin-top: 50px;
+    margin-left: fixed;
+
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.diplayOff{
+    display: none;
+
 }

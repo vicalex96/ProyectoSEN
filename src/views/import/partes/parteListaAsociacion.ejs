@@ -1,4 +1,16 @@
-<div class=" container centrade color-white">
+<div class=" container modal-dialog modal-content color text-center col-md-4 mb-3">
+<h1> Tabla Asociaciones</h1>
+</div>
+
+<div class=" container center modal-dialog col-md-6 mb-3">
+<% if (message.length > 0) { %>
+  <div class="alert alert-danger">
+	<%= message %>
+  </div>
+<% } %>
+</div>
+
+<div class=" container modal-content  color centrade">
 	<div class="row">
 	<table id="table" class="fixed table table-striped table-bordered table-dark" style="width:100%">
         <thead>
@@ -21,7 +33,7 @@
                     <th ><%= asociaciones[i].nombre_nodo1 %></th>
                     <th ><%= asociaciones[i].nombre_nodo2 %></th>
                     <th ><%= asociaciones[i].tipo_nodo1 %> -> <%= asociaciones[i].tipo_nodo2 %> </th>
-                    <th ><%= asociaciones[i].capacidad %> MW</th>
+                    <th ><%= asociaciones[i].capacidad %> KW</th>
 					<% if (user.supervisor == false) { %>
 						<th>
 						<form class="" action="/asociaciones/editar" method="get">

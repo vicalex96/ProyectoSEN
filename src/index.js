@@ -33,6 +33,7 @@ app.use(express.static(path.join(__dirname, '..', '..', 'client')));
 require(__dirname + '/server/routes.js')(app)
 require(__dirname + '/server/nodoRoutes.js')(app)
 require(__dirname + '/server/asociacionRoutes.js')(app)
+require(__dirname + '/server/usuariosRoutes.js')(app)
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -40,3 +41,4 @@ app.set('view engine', 'ejs');
 app.use("/css", express.static(path.join(__dirname, '/views/css')));
 app.use("/img", express.static(path.join(__dirname, '/views/img')));
 app.use("/js", express.static(path.join(__dirname, '/views/js')));
+app.use("/graph", express.static(path.join(__dirname, '/views/graph')));
