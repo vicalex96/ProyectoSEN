@@ -7,8 +7,9 @@
     </head>
     <body>
         <% include import/viewHeader.ejs %>
-        <div class=" container modal-dialog text-center col-lg-8">
-            <div class=" modal-content">
+
+        <div class=" container modal-dialog  modal-content color col-lg-8 ">
+            <div class="  color  ">
                 <h4 class= "text-center"> Datos de Usuario </h4>
 
                 <div class="form-group">
@@ -35,12 +36,11 @@
                         <% if(user.supervisor){%> SUP<%} else {%>
                         OPE<%}%>-<%=user.id%>-<%= (user.id+3000000).toString(16) %> </label>
 
-
                  <form class="" action="/usuarios/cambiarcontrasena" method="get">
                      <input type="submit" value= "Cambiar contraseña" class=" btn btn-success">
                      </form>
                      </div>
-        </div>
+
 
         <% include import/BSConnect.ejs %>
 

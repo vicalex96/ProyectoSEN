@@ -3,11 +3,6 @@
         <form class=" needs-validation" action="/nodos/actualizar" method="post" novalidate>
             <br>
             <h4 class= " text-center"> Editar nodo </h4>
-            <% if (message.length > 0) { %>
-              <div class="alert alert-danger">
-                <%= message %>
-              </div>
-            <% } %>
 
             <input type="text" class="invisible esconde" name="id" id="id"
                   value="<%= nodo.id %>">
