@@ -12,6 +12,7 @@ async function crear(req, res) {
     await dao.crear(req,res)
     .then(async() => {
             req.flash('registerMessage','se creo el usuario')
+            console.log("a guardar la accion")
             await servicioAccion.crearAccion(req,res,"crear usuario",
                             "Usuario: " + req.body.userName, req.user)
             respuesta = true
@@ -22,6 +23,7 @@ async function crear(req, res) {
         }else if( error.code != null){
             req.flash('registerMessage','ocurrio un error')
         }
+        console.log("a guardar la accion error")
         await servicioAccion.crearAccion(req,res,"crear usuario",
                         "Fallida, error: " + error.code, req.user)
         respuesta = false
@@ -39,16 +41,30 @@ async function actualizar(req,res){
     await dao.actualizar(req,res)
     .then(async(resp)=>{
         respuesta = true
-        await servicioAccion.crearAccion(req,res,"actualizar usuario",
-                        "Usuario: " + req.body.userName, req.user)
+        req.flash('usuarioMessage','El usuario se ha actualizado')
     })
     .catch(async(error)=>{
         respuesta = false
-        await servicioAccion.crearAccion(req,res,"actualizar usuario",
-                        "Fallida, error: " + error.code, req.user)
+        req.flash('usuarioMessage','Error: no se pudo actualizar el usuario')
     })
     return respuesta
 }
+
+
+async function actualizarContrasena(req,res,usuario){
+    var respuesta
+    await dao.actualizarContrasena(req,res,usuario)
+    .then(async(resp)=>{
+        respuesta = true
+        req.flash('usuarioMessage','La contraseña se ha actualizado')
+    })
+    .catch(async(error)=>{
+        respuesta = false
+        req.flash('usuarioMessage','Error: no se pudo actualizar la contraseña')
+    })
+    return respuesta
+}
+
 
 function loginRequired(req, res, next) {
     if (!req.user){
@@ -101,5 +117,6 @@ module.exports = {
     loginRequired,
     adminRequired,
     loginRedirect,
-    cargarUsuario
+    cargarUsuario,
+    actualizarContrasena
   };

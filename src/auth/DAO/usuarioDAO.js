@@ -8,8 +8,10 @@ function crear(req, res) {
     }else{
         userType = false;
     }
+
     const salt = bcrypt.genSaltSync();
     const hash = bcrypt.hashSync(req.body.password, salt)
+
     return new Promise(function(resolve,reject){
         knex('usuario').insert({
             nombre_usuario: req.body.userName,
@@ -50,7 +52,7 @@ function actualizar(req,res){
   }else{
     bloqueado = false
   }
-  usuarioid=parseInt(req.body.id)
+  usuarioid=parseInt(req.body.usuarioid)
     if(req.body.userType == 'Supervisor'){
         userType = true;
     }else{
@@ -74,10 +76,29 @@ function actualizar(req,res){
     })
 }
 
+function actualizarContrasena(req,res,usuario){
+
+    const salt = bcrypt.genSaltSync();
+    const hash = bcrypt.hashSync(req.body.password, salt)
+
+    return new Promise(function(resolve,reject){
+        knex('usuario').where({ id: req.body.usuarioid}).first()
+        .update({contrasena: hash,
+                bloqueado: false,
+                contador: 0
+                })
+        .then(()=>{
+            resolve(true)
+        })
+        .catch((error)=>{
+
+            reject(error)
+        })
+    })
+}
+
 function cargarUsuario(req,res){
     return new Promise(function(resolve,reject){
-
-
      var id = parseInt (req.query.usuarioid)
         knex('usuario').where({ id: id}).first()
         .then((usuario)=>{
@@ -92,4 +113,5 @@ function cargarUsuario(req,res){
       eliminar,
       actualizar,
       cargarUsuario,
+      actualizarContrasena
   };

@@ -15,7 +15,7 @@ app.post ('/usuario/actualizar', async (req, res)=>{
 } )
 
 app.get('/usuarios/editar', async (req, res)  => {
-  if (req.isAuthenticated() && !req.user.superviso) {
+  if (req.isAuthenticated() && req.user.supervisor) {
       usuario = await servicioUsuario.cargarUsuario(req,res)
 
 
@@ -29,4 +29,42 @@ app.get('/usuarios/editar', async (req, res)  => {
     res.redirect('/home')
   }
 })
+
+app.get('/usuarios/cambiarcontrasena', async (req, res)  => {
+
+  if (req.isAuthenticated()) {
+      if(req.user.supervisor){
+          sujetoAEditar = req.query.usuarioid
+      }else{
+          sujetoAEditar = req.user.id
+      }
+      res.render('viewEditarContrasena',{
+          logged: true,
+          user: req.user,
+          id: sujetoAEditar,
+          message: req.flash('usuarioMessage'),
+      })
+  }else{
+    res.redirect('/home')
+  }
+})
+
+app.post('/usuarios/cambiarcontrasena', async (req, res)  => {
+    if (req.isAuthenticated()) {
+        respuesta = await servicioUsuario.actualizarContrasena(req,res)
+        if(req.user.supervisor){
+
+            res.redirect('/userAdministration')
+        }else{
+            res.redirect('/perfil')
+        }
+
+    }else{
+        res.redirect('/home')
+    }
+
+})
+
+
+
 }

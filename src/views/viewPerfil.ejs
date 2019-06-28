@@ -35,7 +35,11 @@
                         <% if(user.supervisor){%> SUP<%} else {%>
                         OPE<%}%>-<%=user.id%>-<%= (user.id+3000000).toString(16) %> </label>
 
-            </div>
+
+                 <form class="" action="/usuarios/cambiarcontrasena" method="get">
+                     <input type="submit" value= "Cambiar contraseña" class=" btn btn-success">
+                     </form>
+                     </div>
         </div>
 
         <% include import/BSConnect.ejs %>
