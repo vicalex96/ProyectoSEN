@@ -1,0 +1,52 @@
+<div class=" container modal-dialog col-md-6 mb-3">
+    <div class="color modal-content text-center">
+      <form class=" needs-validation" action="/usuarios/cambiarcontrasena" method="post" novalidate>
+          <br>
+          <h4 class= " text-center"> Cambiar Contraseña del Usuario </h4>
+
+            <div class="form-row center">
+            <div class="col-md-6 mb-3">
+
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroupPrepend">P</span>
+                    </div>
+                    <input type="password" class="form-control" name="password" id="password"
+                        id="password" placeholder="Contraseña*"
+                        aria-describedby="inputGroupPrepend"
+                        pattern="(?=.*\d)(?=.*[!@#$%^*+-/~_.,?¡¿=°|¬])(?=.*[0-9])(?=.*[a-zÑ])(?=.*[A-ZÑ]).{8,}"
+                        required>
+                    <div class="invalid-feedback">
+                        Requerido: <br>
+                        Mínimo 8 caracteres<br>
+                        1 Mayúscula <br>
+                        1 Minúscula<br>
+                        1 Número<br>
+                        1 Caracter especial<br>
+                        !@#$%^*+-/~_.,?¡¿=°|¬
+                    </div>
+                </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroupPrepend">R</span>
+                  </div>
+                  <input type="password" class="form-control" name="repassword" id="repassword"
+                         placeholder="repita Contraseña*"
+                         aria-describedby="inputGroupPrepend"
+                         pattern="(?=.*\d)(?=.*[!@#$%^*+-/~_.,?¡¿=°|¬])(?=.*[0-9])(?=.*[a-zÑ])(?=.*[A-ZÑ]).{8,}"
+                         required>
+                  <div class="invalid-feedback">
+                     tiene que ser igual a la contraseña
+                  </div>
+                </div>
+              </div>
+                </div>
+                <input type="" class="invisible esconde" name="usuarioid" id="usuarioid"
+                                                value="<%= id %>">
+                <button class="btn btn-success btn-sm mb-4" type="submit"> Actualizar</button>
+            </form>
+        </div>
+</div>

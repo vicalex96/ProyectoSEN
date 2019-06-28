@@ -35,18 +35,12 @@
                     <label for="title">Codigo de empleado:
                         <% if(user.supervisor){%> SUP<%} else {%>
                         OPE<%}%>-<%=user.id%>-<%= (user.id+3000000).toString(16) %> </label>
-                        <form class="" action="/usuarios/cambiarcontrasena" method="get">
-                            <input type="" class="invisible esconde" name="usuarioid" id="usuarioid"
-                                                            value="<%= user.id %>">
-                            <input type="submit" value= "editar" class=" btn btn-success">
-                            </form>
-                </div>
-                <form class="" action="/usuarios/cambiarcontrasena" method="get">
-                    <input type="" class="invisible esconde" name="usuarioid" id="usuarioid"
-                                                    value="<%= user.id %>">
-                    <input type="submit" value= "editar" class=" btn btn-success">
-                    </form>
-        </div>
+
+                 <form class="" action="/usuarios/cambiarcontrasena" method="get">
+                     <input type="submit" value= "Cambiar contraseña" class=" btn btn-success">
+                     </form>
+                     </div>
+
 
         <% include import/BSConnect.ejs %>
 
