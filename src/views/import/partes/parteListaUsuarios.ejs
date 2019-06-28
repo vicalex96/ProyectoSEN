@@ -1,4 +1,16 @@
-<div class=" container centrade color-white">
+<div class=" container modal-dialog modal-content color text-center col-md-4 mb-3">
+<h1> Administracion de usuarios</h1>
+</div>
+
+<div class=" container center modal-dialog col-md-6 mb-3">
+<% if (message.length > 0) { %>
+  <div class="alert alert-danger">
+	<%= message %>
+  </div>
+<% } %>
+</div>
+
+<div class=" container modal-content  color centrade">
 	<div class="row">
 	<table id="table" class="fixed table table-striped table-bordered table-dark" style="width:100%">
         <thead>
@@ -10,7 +22,8 @@
                 <th>apellido</th>
                 <th>cargo</th>
                 <th>bloqueado</th>
-								<th> editar </th>
+				<th> editar </th>
+				<th> contraseña </th>
             </tr>
         </thead>
         <tbody>
@@ -39,6 +52,13 @@
 						<input type="" class="invisible esconde" name="usuarioid" id="usuarioid"
 														value="<%= usuarios[i].id %>">
 						<input type="submit" value= "editar" class=" btn btn-success">
+						</form>
+					</th>
+					<th>
+					<form class="" action="/usuarios/cambiarcontrasena" method="get">
+						<input type="" class="invisible esconde" name="usuarioid" id="usuarioid"
+														value="<%= usuarios[i].id %>">
+						<input type="submit" value= "modificar" class=" btn btn-warning">
 						</form>
 					</th>
                 </tr>

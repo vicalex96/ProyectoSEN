@@ -90,6 +90,7 @@ module.exports = (app) => {
                 logged: true,
                 user: req.user,
                 usuarios: usuarios,
+                message: req.flash('usuarioMessage')
             })
         }else{
             res.redirect('/home')
