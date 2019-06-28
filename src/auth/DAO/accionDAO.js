@@ -6,7 +6,7 @@ function crear(req, res, tipoDeAccion, objeto, operador)  {
             knex('accion').insert({
                 tipo_accion: tipoDeAccion,
                 objeto_afectado: objeto,
-                nombre_operador: operador.nombre,
+                nombre_operador: operador.nombre_usuario,
                 id_operador: operador.id
             })
             .then(() => {

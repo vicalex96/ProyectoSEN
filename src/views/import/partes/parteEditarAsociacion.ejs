@@ -4,11 +4,6 @@
             <br>
             <h4 class= " text-center"> Editar una asociacion </h4>
 
-            <% if (message.length > 0) { %>
-              <div class="alert alert-danger">
-                <%= message %>
-              </div>
-            <% } %>
 
             <input type="" class="invisible esconde" name="asociacionid" id="asociacionid"
                   value="<%= asociacion.id %>">
@@ -19,7 +14,7 @@
             <div class="col-md-8 mb-3">
             <div class="input-group">
             <div class="input-group-prepend">
-                <span class="input-group-text">MW</span>
+                <span class="input-group-text">KW</span>
             </div>
 
 
@@ -29,7 +24,7 @@
                    aria-describedby="inputGroupPrepend" required>
                    <div class="invalid-feedback">
                        campo no puede estar vacio <br>
-                       Unidad de medida Megavatios <br>
+                       Unidad de medida Kilovatios <br>
                        maximo 2 decimales
                    </div>
             </div>

@@ -12,18 +12,23 @@
     </head>
     <body>
         <% include import/viewHeader.ejs %>
-        <svg class="container  centrade color-white  center paddingnull col-md-5 mb-5"
+
+        <div class=" container modal-dialog modal-content color text-center col-md-4 ">
+        <h1> Mapa</h1>
+        </div>
+
+        <svg class="container  modal-content  centrade color-white  center paddingnull col-md-5"
         id="my_dataviz" width="500" height="430"> </svg>
 
 
-        <div id="infoNodo" class="container   color-white col-md-3 mb-3 diplayOff">
+        <div id="infoNodo" class="container modal-content color col-md-3 mb-3 diplayOff">
           nombre: <span id="nombre" class="info"></span><br>
           tipo: <span id="tipo" class="info"></span><br>
           longitud: <span id="longitud" class="info"></span><br>
           latitud: <span id="latitud" class="info"></span><br>
         </div>
 
-        <div id="infoAsociacion" class="container   color-white col-md-3 mb-3 diplayOff">
+        <div id="infoAsociacion" class="container modal-content color col-md-3 diplayOff">
           nodo de salida: <span id="nodoSalida" class="info"></span><br>
           nodo de llegada: <span id="nodoLlegada" class="info"></span><br>
           capacidad: <span id="capacidad" class="info"></span><br>
@@ -31,7 +36,7 @@
 
         <script>
         var nodes = <%- JSON.stringify(nodos) %>
-        
+        var association = <%- JSON.stringify(asociaciones) %>
         </script>
         <script src="graph/grafoCargarMapa.js"></script>
         <% include import/BSConnect.ejs %>

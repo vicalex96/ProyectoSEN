@@ -113,12 +113,12 @@ module.exports = (app) => {
         if (req.isAuthenticated()) {
            tablaNodo = await servicioNodo.cargarTabla(req, res);
            servicioNodo.adapatarCoordenasAGrafoGD(tablaNodo)
-
+           tablaAsociacion = await servicioAsociacion.cargarTablaConCoordenadas(req,res,tablaNodo)
           res.render('viewGrafo', {
             logged: true,
             user: req.user,
             nodos: tablaNodo,
-
+            asociaciones: tablaAsociacion
           });
         }else{
           res.render('viewHome', {

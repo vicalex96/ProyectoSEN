@@ -118,11 +118,28 @@ async function comprobarExistenciaDeAsociacion(req,res){
     return respuesta
 }
 
+
+async function cargarTablaConCoordenadas(req,res,nodos){
+    asociaciones = await dao.cargarTabla(req,res)
+    for(SelectorNodo = 0; SelectorNodo< nodos.length; SelectorNodo++ ){
+        for(SelectorAsocicacion = 0; SelectorAsocicacion< asociaciones.length; SelectorAsocicacion++ ){
+            if(nodos[SelectorNodo].nombre == asociaciones[SelectorAsocicacion].nombre_nodo1){
+                asociaciones[SelectorAsocicacion].coordenadasNodo1 = nodos[SelectorNodo].coordenadas
+
+            }else if(nodos[SelectorNodo].nombre == asociaciones[SelectorAsocicacion].nombre_nodo2){
+                asociaciones[SelectorAsocicacion].coordenadasNodo2 = nodos[SelectorNodo].coordenadas
+            }
+        }
+    }
+    return asociaciones
+}
+
   module.exports = {
     cargarTabla,
     cargarAsociacion,
     crear,
     actualizar,
     eliminar,
-    comprobarExistenciaDeAsociacion
+    comprobarExistenciaDeAsociacion,
+    cargarTablaConCoordenadas
   };
