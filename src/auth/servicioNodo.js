@@ -103,24 +103,24 @@ async function actualizar(req,res){
 
 async function eliminar(req,res) {
     var respuesta
-    var nodoAfectado = req.body.nodoNombre
+    var nodoAfectado = req.body.nombreNodo
     existe = await servicioAsociacion.comprobarExistenciaDeAsociacion(req,res)
     if(!existe){
         await dao.eliminar(req,res)
         .then(async()=>{
             req.flash('listaNodoMessage','Nodo Eliminado')
             await servicioAccion.crearAccion(req,res,"eliminar nodo",
-                           "Nodo: " + req.body.nodoNombre, req.user)
+                           "Nodo: " + req.body.nombreNodo, req.user)
             respuesta = true
         })
         .catch(async(error)=>{
             req.flash('listaNodoMessage','Error: no fue posible eliminar el nodo')
             await servicioAccion.crearAccion(req,res,"eliminar nodo",
-                            "Fallida, error: " + error.code + " sobre :" + req.body.nodoNombre, req.user)
+                            "Fallida, error: " + error.code + " sobre :" + req.body.nombreNodo, req.user)
             respuesta = false
         })
     }else{
-        req.flash('listaNodoMessage',"Error: el nodo "+ req.body.nodoNombre +
+        req.flash('listaNodoMessage',"Error: el nodo "+ req.body.nombreNodo +
                         " esta asociado a otros nodos, elimine primero sus asociaciones")
         respuesta = false
     }
@@ -165,5 +165,6 @@ module.exports = {
     crear,
     actualizar,
     eliminar,
-    adapatarCoordenasAGrafoGD
+    adapatarCoordenasAGrafoGD,
+    juntarCoordenadas
 }

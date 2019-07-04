@@ -94,8 +94,8 @@ function eliminar(req, res) {
 function buscarExistenciaAsociacion(req,res){
     var cantidad
     return new Promise(function(resolve,reject){
-        knex('asociacion').where({ nombre_nodo1: req.body.nodoNombre})
-        .orWhere({ nombre_nodo2: req.body.nodoNombre}).first()
+        knex('asociacion').where({ nombre_nodo1: req.body.nombreNodo})
+        .orWhere({ nombre_nodo2: req.body.nombreNodo}).first()
         .then((asociacion)=>{
             if(asociacion){
                 resolve(true)

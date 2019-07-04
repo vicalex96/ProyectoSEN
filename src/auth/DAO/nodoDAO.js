@@ -24,20 +24,23 @@ function cargarTabla(){
 
 function cargarNodo(req,res){
     return new Promise(function(resolve,reject){
-        knex('nodo').where({ nombre: req.query.nodoNombre}).first()
+        knex('nodo').where({ nombre: req.query.nombreNodo}).first()
         .then((nodo)=>{
             resolve(nodo)
+        })
+        .catch((error)=>{
+            reject(error)
         })
     })
 }
 
 function eliminar(req,res){
     return new Promise(function(resolve,reject){
-        knex('nodo').where({ nombre: req.body.nodoNombre}).first().del()
+        knex('nodo').where({ nombre: req.body.nombreNodo}).first().del()
         .then(()=>{
             resolve(true)
         })
-        .catch((error) => {
+        .catch((error)=>{
             reject(error)
         })
     })
@@ -46,10 +49,10 @@ function eliminar(req,res){
 function actualizar(req,res){
     return new Promise(function(resolve,reject){
         nodoid = parseInt(req.body.id)
-      
+
         knex('nodo').where({ id: nodoid}).first()
         .update({nombre: req.body.nombreNodo,
-            latitud: req.body.coordenaLatitud,
+            longitud: req.body.coordenaLongitud,
             latitud: req.body.coordenaLatitud,
             tipo_nodo: req.body.tipoNodo
          })
