@@ -8,9 +8,7 @@ GitHub Classroom
 
 proyecto comenzado en mayo del 2019
 
-Heroku Entrega5(Ent3 de codigo): https://proyecto-sen.herokuapp.com
-
-Heroku Entrega4(Ent2 de codigo): https://teamnode-sen.herokuapp.com
+Link de la aplicacion desplegada: https://proyecto-sen.herokuapp.com
 
 Supervisor 
 
