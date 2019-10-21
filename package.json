@@ -33,7 +33,7 @@
     "cross-env": "^5.2.0",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
-    "knex": "^0.17.0",
+    "knex": "^0.19.5",
     "method-override": "^3.0.0",
     "morgan": "^1.9.1",
     "nodemon": "^1.19.0",
